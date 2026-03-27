@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Tatil Kasası</title>
+<title>Splitzi</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
@@ -428,45 +428,351 @@ body::before {
   .app { padding: 1.5rem 1rem 3rem; }
   .total-amount { font-size: 1.3rem; }
 }
+
+.onboarding {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 70vh;
+  text-align: center;
+  animation: slideUp 0.6s ease forwards;
+}
+
+.onboarding-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 0.5rem;
+}
+
+.onboarding-sub {
+  font-size: 0.9rem;
+  color: var(--muted);
+  margin-bottom: 2rem;
+}
+
+.emoji-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+}
+
+.emoji-btn {
+  font-size: 1.8rem;
+  width: 52px;
+  height: 52px;
+  border-radius: 12px;
+  border: 2px solid var(--border);
+  background: var(--surface);
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.emoji-btn:hover { border-color: var(--accent); background: var(--accent-bg); transform: scale(1.05); }
+.emoji-btn.selected { border-color: var(--accent); background: var(--accent-bg); }
+
+.trip-name-display {
+  font-family: 'Syne', sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text);
+  letter-spacing: -0.01em;
+}
+
+.trip-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  background: var(--accent-bg);
+  border: 1px solid rgba(79,142,247,0.2);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.trip-badge:hover { background: rgba(79,142,247,0.15); }
+
+.trip-emoji { font-size: 1rem; }
+
+.cat-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  margin-bottom: 4px;
+}
+
+.cat-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 8px 4px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--surface2);
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.cat-btn:hover { border-color: var(--border2); }
+.cat-btn.selected { border-color: var(--accent); background: var(--accent-bg); }
+.cat-btn .cat-emoji { font-size: 1.3rem; }
+.cat-btn .cat-label { font-size: 0.68rem; color: var(--muted); }
+.cat-btn.selected .cat-label { color: var(--accent); }
+
+.cat-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 0.68rem;
+  padding: 2px 6px;
+  border-radius: 999px;
+  background: var(--surface2);
+  color: var(--muted);
+  border: 1px solid var(--border);
+}
+
+.cat-bar-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.cat-bar-emoji { font-size: 1rem; width: 20px; text-align: center; }
+.cat-bar-name { font-size: 0.82rem; color: var(--text); width: 70px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.cat-bar-wrap { flex: 1; height: 6px; background: var(--surface2); border-radius: 999px; overflow: hidden; }
+.cat-bar-fill { height: 100%; border-radius: 999px; transition: width 0.6s ease; }
+.cat-bar-amount { font-size: 0.78rem; color: var(--muted); min-width: 52px; text-align: right; }
+
+.timeline { position: relative; padding-left: 20px; }
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 6px;
+  top: 6px;
+  bottom: 6px;
+  width: 1px;
+  background: var(--border);
+}
+.timeline-day { margin-bottom: 1.5rem; position: relative; }
+.timeline-dot {
+  position: absolute;
+  left: -17px;
+  top: 4px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+  border: 2px solid var(--bg);
+  z-index: 1;
+}
+.timeline-date {
+  font-family: 'Syne', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--accent);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.timeline-day-total {
+  font-size: 0.7rem;
+  color: var(--muted);
+  margin-left: 8px;
+  font-weight: 400;
+}
+.timeline-item {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 9px 12px;
+  margin-bottom: 5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.timeline-item-left { display: flex; flex-direction: column; gap: 2px; }
+.timeline-item-desc { font-size: 0.85rem; font-weight: 500; color: var(--text); }
+.timeline-item-meta { font-size: 0.7rem; color: var(--muted); display: flex; align-items: center; gap: 5px; }
+.timeline-item-amount { font-family: 'Syne', sans-serif; font-size: 0.9rem; font-weight: 600; color: var(--text); }
+
+.receipt-upload {
+  border: 1.5px dashed var(--border2);
+  border-radius: 12px;
+  padding: 1.2rem;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  background: var(--surface2);
+  position: relative;
+}
+.receipt-upload:hover { border-color: var(--accent); background: var(--accent-bg); }
+.receipt-upload input[type=file] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
+.receipt-upload-icon { font-size: 1.6rem; margin-bottom: 6px; }
+.receipt-upload-text { font-size: 0.82rem; color: var(--muted); }
+.receipt-upload-text span { color: var(--accent); }
+.receipt-preview {
+  position: relative;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+.receipt-preview img { width: 100%; max-height: 180px; object-fit: cover; border-radius: 10px; }
+.receipt-preview-close {
+  position: absolute;
+  top: 6px; right: 6px;
+  background: rgba(0,0,0,0.6);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 24px; height: 24px;
+  cursor: pointer;
+  font-size: 12px;
+  display: flex; align-items: center; justify-content: center;
+}
+.ai-reading {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.82rem;
+  color: var(--accent);
+  padding: 8px 0;
+}
+.ai-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  animation: aiPulse 1s ease infinite;
+}
+@keyframes aiPulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.3; transform: scale(0.7); }
+}
+.ai-dot:nth-child(2) { animation-delay: 0.15s; }
+.ai-dot:nth-child(3) { animation-delay: 0.3s; }
+
+.currency-selector {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.currency-btn {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--surface2);
+  color: var(--muted);
+  font-size: 0.82rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: 'DM Sans', sans-serif;
+}
+.currency-btn:hover { border-color: var(--border2); color: var(--text); }
+.currency-btn.selected { border-color: var(--accent); background: var(--accent-bg); color: var(--accent); }
+.currency-flag { font-size: 1rem; }
+.converted-hint {
+  font-size: 0.72rem;
+  color: var(--accent);
+  margin-top: 4px;
+  min-height: 16px;
+}
 </style>
 </head>
 <body>
 <div class="app">
 
-  <div class="header">
+  <!-- ONBOARDING VIEW -->
+<div id="view-onboarding" style="display:none;">
+  <div class="onboarding">
+    <div style="font-size:3rem;margin-bottom:1rem;" id="onboard-emoji-display">🌴</div>
+    <div class="onboarding-title">Tatilini oluştur</div>
+    <div class="onboarding-sub">Bir isim ver ve emoji seç</div>
+
+    <div style="width:100%;margin-bottom:1rem;">
+      <input class="form-input" id="trip-name-input" type="text" placeholder="Ör: Bodrum 2025, Kapadokya..." style="text-align:center;font-size:1rem;" />
+    </div>
+
+    <div class="emoji-grid" id="emoji-grid"></div>
+
+    <button class="btn btn-primary" onclick="createTrip()" style="width:100%;padding:12px;font-size:1rem;">Başla →</button>
+  </div>
+</div>
+
+<div id="view-main" style="display:none;">
+
+<div class="header">
     <div class="header-top">
       <div>
-        <div class="logo">Tatil <span>Kasası</span></div>
+        <div class="logo">Split<span>zi</span></div>
+        <div class="trip-badge" id="trip-badge" onclick="editTrip()" title="Tatil adını değiştir"></div>
       </div>
       <div class="total-badge">
-        <div class="total-label">Toplam</div>
+        <div class="total-label" style="display:flex;align-items:center;gap:6px;">
+          Toplam
+          <select id="base-currency-select" onchange="baseCurrency=this.value;renderMain();"
+            style="font-size:0.65rem;background:var(--surface2);border:1px solid var(--border);color:var(--muted);border-radius:4px;padding:1px 4px;cursor:pointer;outline:none;">
+            ${CURRENCIES.map(c=>`<option value="${c.code}">${c.flag} ${c.label}</option>`).join('')}
+          </select>
+        </div>
         <div class="total-amount" id="total-display">₺0</div>
       </div>
     </div>
     <div class="btn-row">
       <button class="btn btn-primary" onclick="setView('add')">+ Harcama ekle</button>
-      <button class="btn" onclick="setView('settle')">Hesap kapat</button>
+      <button class="btn" onclick="setView('settle')">Tatil Özeti</button>
       <button class="btn" onclick="setView('people')">Kişiler</button>
     </div>
   </div>
 
   <!-- MAIN VIEW -->
-  <div id="view-main" class="tab active">
-    <div style="margin-bottom: 1.5rem; opacity:0; animation: slideUp 0.5s ease forwards 0.2s;">
-      <div class="section-label">Sıralama</div>
-      <div id="leaderboard"></div>
-    </div>
-    <div style="opacity:0; animation: slideUp 0.5s ease forwards 0.35s;">
-      <div class="section-label">Harcamalar</div>
-      <div id="expense-list"></div>
-      <div id="empty-msg" class="empty-msg">Henüz harcama yok. Ekle butonuna bas!</div>
-    </div>
+
+    <div style="margin-bottom:1.5rem; opacity:0; animation: slideUp 0.5s ease forwards 0.2s;">
+    <div class="section-label">Sıralama</div>
+    <div id="leaderboard"></div>
+  </div>
+
+  <div style="opacity:0; animation: slideUp 0.5s ease forwards 0.35s;">
+    <div class="section-label">Harcamalar</div>
+    <div id="expense-list"></div>
+    <div id="empty-msg" class="empty-msg">Henüz harcama yok. Ekle butonuna bas!</div>
+  </div>
   </div>
 
   <!-- ADD VIEW -->
-  <div id="view-add" class="tab">
+  <div id="view-add" style="display:none;">
     <div class="section-label" style="margin-bottom:12px;">Yeni harcama</div>
     <div class="form-card">
+      <div class="form-group">
+        <label class="form-label">Fiş / makbuz (opsiyonel)</label>
+        <div id="receipt-preview" class="receipt-preview" style="display:none;">
+          <img id="receipt-img" src="" alt="Fiş" />
+          <button class="receipt-preview-close" onclick="clearReceipt()">✕</button>
+        </div>
+        <div class="receipt-upload" id="receipt-upload-area">
+          <input type="file" accept="image/*" onchange="handleReceipt(event)" />
+          <div class="receipt-upload-icon">📷</div>
+          <div class="receipt-upload-text">Fotoğraf yükle, <span>AI otomatik doldursun</span></div>
+        </div>
+        <div class="ai-reading" id="ai-loading" style="display:none;">
+          <div class="ai-dot"></div><div class="ai-dot"></div><div class="ai-dot"></div>
+          <span>Fiş okunuyor...</span>
+        </div>
+      </div>
+
       <div class="form-group">
         <label class="form-label">Açıklama</label>
         <input class="form-input" id="exp-desc" type="text" placeholder="Akşam yemeği, market, yakıt..." />
@@ -476,12 +782,25 @@ body::before {
         <input class="form-input" id="exp-amount" type="number" placeholder="0" />
       </div>
       <div class="form-group">
+        <label class="form-label">Para birimi</label>
+        <div class="currency-selector" id="exp-currency-selector"></div>
+        <div class="converted-hint" id="converted-hint"></div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Tarih</label>
+        <input class="form-input" id="exp-date" type="date" />
+      </div>
+      <div class="form-group">
         <label class="form-label">Ödeyen</label>
         <select class="form-select" id="exp-payer"></select>
       </div>
       <div class="form-group">
         <label class="form-label">Kimler dahil?</label>
         <div class="checkbox-group" id="participant-checks"></div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Kategori</label>
+        <div class="cat-grid" id="cat-grid"></div>
       </div>
       <div style="display:flex; gap:8px; margin-top:4px;">
         <button class="btn btn-primary" onclick="saveExpense()" style="flex:1;">Kaydet</button>
@@ -491,7 +810,7 @@ body::before {
   </div>
 
   <!-- PEOPLE VIEW -->
-  <div id="view-people" class="tab">
+  <div id="view-people" style="display:none;">
     <div class="section-label" style="margin-bottom:12px;">Katılımcılar</div>
     <div class="form-card">
       <div class="people-chips" id="people-chips"></div>
@@ -505,15 +824,25 @@ body::before {
     </div>
   </div>
 
-  <!-- SETTLE VIEW -->
-  <div id="view-settle" class="tab">
-    <div class="section-label" style="margin-bottom:12px;">Tatil özeti</div>
+<!-- SETTLE VIEW -->
+  <div id="view-settle" style="display:none;">
+    <div class="section-label" style="margin-bottom:12px;">Tatil Özeti</div>
 
     <div class="summary-grid" id="summary-grid"></div>
 
     <div style="margin-bottom:1.5rem;">
-      <div class="section-label">Harcama dağılımı</div>
+      <div class="section-label">Kişi bazlı dağılım</div>
       <div id="dist-chart"></div>
+    </div>
+
+    <div style="margin-bottom:1.5rem;">
+      <div class="section-label">Kategori bazlı dağılım</div>
+      <div id="cat-chart"></div>
+    </div>
+
+    <div style="margin-bottom:1.5rem;">
+      <div class="section-label">Günlük akış</div>
+      <div id="timeline-chart" class="timeline"></div>
     </div>
 
     <div style="margin-bottom:1.5rem;">
@@ -537,19 +866,109 @@ const COLORS = [
   {color:'#06b6d4', bg:'rgba(6,182,212,0.12)'},
 ];
 
+const VERSION = 'v2';
+const CATEGORIES = [
+  {id:'food',    emoji:'🍽', label:'Yemek'},
+  {id:'travel',  emoji:'🚗', label:'Ulaşım'},
+  {id:'fun',     emoji:'🎉', label:'Eğlence'},
+  {id:'market',  emoji:'🛒', label:'Market'},
+  {id:'hotel',   emoji:'🏨', label:'Konaklama'},
+  {id:'sea',     emoji:'🌊', label:'Aktivite'},
+];
+const CAT_COLORS = ['#4f8ef7','#3ecf8e','#f7b84f','#a78bfa','#f75f5f','#06b6d4'];
+
+const CURRENCIES = [
+  {code:'TRY', symbol:'₺', flag:'🇹🇷', label:'TL'},
+  {code:'USD', symbol:'$', flag:'🇺🇸', label:'USD'},
+  {code:'EUR', symbol:'€', flag:'🇪🇺', label:'EUR'},
+  {code:'GBP', symbol:'£', flag:'🇬🇧', label:'GBP'},
+];
+
+let baseCurrency = 'TRY';
+let rates = {TRY:1, USD:0, EUR:0, GBP:0};
+let ratesLoaded = false;
+
+async function fetchRates() {
+  try {
+    const res = await fetch('https://api.exchangerate-api.com/v4/latest/TRY');
+    const data = await res.json();
+    rates.USD = data.rates.USD;
+    rates.EUR = data.rates.EUR;
+    rates.GBP = data.rates.GBP;
+    ratesLoaded = true;
+  } catch(e) {
+    rates = {TRY:1, USD:0.028, EUR:0.026, GBP:0.022};
+    ratesLoaded = true;
+  }
+}
+
+function toTRY(amount, fromCurrency) {
+  if (fromCurrency === 'TRY') return amount;
+  const rate = rates[fromCurrency];
+  return rate > 0 ? amount / rate : amount;
+}
+
+function fromTRY(amount, toCurrency) {
+  if (toCurrency === 'TRY') return amount;
+  return amount * rates[toCurrency];
+}
+
+function formatAmount(amountTRY, currency) {
+  const cur = CURRENCIES.find(c=>c.code===currency);
+  const converted = fromTRY(amountTRY, currency);
+  return `${cur.symbol}${converted.toFixed(2)}`;
+}
+
+function currencySymbol() {
+  return CURRENCIES.find(c=>c.code===baseCurrency).symbol;
+}
+const EMOJIS = ['🌴','🏖','🏔','🗺','✈️','🚢','🏕','🌊','🏙','🌅','🎡','🍹'];
+
+let tripName = '';
+let tripEmoji = '🌴';
+
 function save() {
-  localStorage.setItem('tatil_people', JSON.stringify(people));
-  localStorage.setItem('tatil_expenses', JSON.stringify(expenses));
+  localStorage.setItem('tatil_people_' + VERSION, JSON.stringify(people));
+  localStorage.setItem('tatil_expenses_' + VERSION, JSON.stringify(expenses));
+  localStorage.setItem('tatil_trip_' + VERSION, JSON.stringify({name: tripName, emoji: tripEmoji}));
 }
 
 function load() {
-  const p = localStorage.getItem('tatil_people');
-  const e = localStorage.getItem('tatil_expenses');
-  if (p) people = JSON.parse(p);
-  if (e) expenses = JSON.parse(e);
+  const p = localStorage.getItem('tatil_people_' + VERSION);
+  const e = localStorage.getItem('tatil_expenses_' + VERSION);
+  const t = localStorage.getItem('tatil_trip_' + VERSION);
+  people = p ? JSON.parse(p) : [];
+  expenses = e ? JSON.parse(e) : [];
+  if (t) { const trip = JSON.parse(t); tripName = trip.name; tripEmoji = trip.emoji; }
 }
 
-let people = ['Zeynep', 'Ali', 'Ayşe', 'Mert'];
+function renderEmojis() {
+  document.getElementById('emoji-grid').innerHTML = EMOJIS.map(e =>
+    `<button class="emoji-btn ${e===tripEmoji?'selected':''}" onclick="selectEmoji('${e}')">${e}</button>`
+  ).join('');
+}
+
+function selectEmoji(e) {
+  tripEmoji = e;
+  document.getElementById('onboard-emoji-display').textContent = e;
+  renderEmojis();
+}
+
+function createTrip() {
+  const name = document.getElementById('trip-name-input').value.trim();
+  if (!name) { document.getElementById('trip-name-input').style.borderColor='var(--red)'; return; }
+  tripName = name;
+  save();
+  setView('main');
+}
+
+function updateTripBadge() {
+  const badge = document.getElementById('trip-badge');
+  if (badge) badge.innerHTML = `<span class="trip-emoji">${tripEmoji}</span><span class="trip-name-display">${tripName}</span>`;
+}
+
+
+let people = [];
 let expenses = [];
 load();
 
@@ -592,14 +1011,19 @@ function calcSettlements(bal) {
 }
 
 function setView(v) {
-  ['main','add','people','settle'].forEach(x => {
+  ['onboarding','main','add','people','settle'].forEach(x => {
     const el = document.getElementById('view-'+x);
-    el.classList.toggle('active', x===v);
+    if (el) el.style.display = x===v ? 'block' : 'none';
   });
-  if (v==='add') renderAdd();
+  if (v==='add') { renderAdd(); clearReceipt(); }
   if (v==='people') renderPeople();
   if (v==='settle') renderSettle();
-  if (v==='main') renderMain();
+  if (v==='main') { renderMain(); updateTripBadge(); }
+}
+
+function editTrip() {
+  const name = prompt('Tatil adını değiştir:', tripName);
+  if (name && name.trim()) { tripName = name.trim(); save(); updateTripBadge(); }
 }
 
 function addPerson() {
@@ -618,11 +1042,79 @@ function saveExpense() {
   const payer = document.getElementById('exp-payer').value;
   const participants = [...document.querySelectorAll('#participant-checks input:checked')].map(c=>c.value);
   if (!desc || !amount || !payer || participants.length===0) return;
-  expenses.push({desc, amount, payer, participants});
+  const date = document.getElementById('exp-date').value || todayStr();
+  const amountInTRY = toTRY(amount, selectedExpCurrency);
+  const expCurrency = selectedExpCurrency;
+  expenses.push({desc, amount: amountInTRY, originalAmount: amount, currency: expCurrency, payer, participants, cat: selectedCat, date});
   save();
   document.getElementById('exp-desc').value='';
   document.getElementById('exp-amount').value='';
   setView('main');
+}
+
+let selectedCat = 'food';
+let receiptBase64 = null;
+
+function clearReceipt() {
+  receiptBase64 = null;
+  document.getElementById('receipt-preview').style.display = 'none';
+  document.getElementById('receipt-upload-area').style.display = 'block';
+}
+
+async function handleReceipt(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = async (e) => {
+    const dataUrl = e.target.result;
+    receiptBase64 = dataUrl.split(',')[1];
+    const mimeType = file.type || 'image/jpeg';
+
+    document.getElementById('receipt-img').src = dataUrl;
+    document.getElementById('receipt-preview').style.display = 'block';
+    document.getElementById('receipt-upload-area').style.display = 'none';
+    document.getElementById('ai-loading').style.display = 'flex';
+
+    try {
+      const response = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          model: 'claude-sonnet-4-20250514',
+          max_tokens: 1000,
+          messages: [{
+            role: 'user',
+            content: [
+              {
+                type: 'image',
+                source: { type: 'base64', media_type: mimeType, data: receiptBase64 }
+              },
+              {
+                type: 'text',
+                text: 'Bu bir fiş veya makbuz fotoğrafı. Lütfen sadece JSON formatında yanıt ver, başka hiçbir şey yazma: {"desc": "kısa açıklama (ör: Restoran, Market, Yakıt)", "amount": toplam_tutar_sayı_olarak, "cat": "food/travel/fun/market/hotel/sea kategorilerinden biri"}. Tutarı rakam olarak ver, para birimi sembolü olmadan.'
+              }
+            ]
+          }]
+        })
+      });
+
+      const data = await response.json();
+      const text = data.content[0].text.trim();
+      const clean = text.replace(/```json|```/g, '').trim();
+      const parsed = JSON.parse(clean);
+
+      if (parsed.desc) document.getElementById('exp-desc').value = parsed.desc;
+      if (parsed.amount) document.getElementById('exp-amount').value = parsed.amount;
+      if (parsed.cat) { selectedCat = parsed.cat; renderCatGrid(); }
+
+    } catch (err) {
+      console.error('AI okuma hatası:', err);
+    } finally {
+      document.getElementById('ai-loading').style.display = 'none';
+    }
+  };
+  reader.readAsDataURL(file);
 }
 
 function renderAdd() {
@@ -631,6 +1123,45 @@ function renderAdd() {
     <label class="checkbox-label">
       <input type="checkbox" checked value="${p}"> ${p}
     </label>`).join('');
+  document.getElementById('exp-date').value = todayStr();
+  selectedExpCurrency = baseCurrency;
+  renderCurrencySelector();
+  renderCatGrid();
+  const amountEl = document.getElementById('exp-amount');
+  if (amountEl) amountEl.oninput = updateConvertedHint;
+}
+
+function renderCatGrid() {
+  document.getElementById('cat-grid').innerHTML = CATEGORIES.map(cat=>`
+    <button class="cat-btn ${cat.id===selectedCat?'selected':''}" onclick="selectedCat='${cat.id}';renderCatGrid();">
+      <span class="cat-emoji">${cat.emoji}</span>
+      <span class="cat-label">${cat.label}</span>
+    </button>`).join('');
+}
+
+let selectedExpCurrency = 'TRY';
+
+function todayStr() {
+  return new Date().toISOString().split('T')[0];
+}
+
+function renderCurrencySelector() {
+  const el = document.getElementById('exp-currency-selector');
+  if (!el) return;
+  el.innerHTML = CURRENCIES.map(c => `
+    <button class="currency-btn ${c.code===selectedExpCurrency?'selected':''}"
+      onclick="selectedExpCurrency='${c.code}';renderCurrencySelector();updateConvertedHint();">
+      <span class="currency-flag">${c.flag}</span>${c.label}
+    </button>`).join('');
+}
+
+function updateConvertedHint() {
+  const hint = document.getElementById('converted-hint');
+  if (!hint) return;
+  const amount = parseFloat(document.getElementById('exp-amount').value);
+  if (!amount || selectedExpCurrency === 'TRY') { hint.textContent=''; return; }
+  const inTRY = toTRY(amount, selectedExpCurrency);
+  hint.textContent = `≈ ₺${inTRY.toFixed(2)} olarak kaydedilecek`;
 }
 
 function renderPeople() {
@@ -646,7 +1177,11 @@ function renderMain() {
   const paid = calcPaid();
   const total = expenses.reduce((s,e)=>s+e.amount,0);
 
-  document.getElementById('total-display').textContent = `₺${total.toFixed(0)}`;
+  const cur = CURRENCIES.find(c=>c.code===baseCurrency);
+  const totalConverted = fromTRY(total, baseCurrency);
+  document.getElementById('total-display').textContent = `${cur.symbol}${totalConverted.toFixed(0)}`;
+  const sel = document.getElementById('base-currency-select');
+  if (sel) sel.value = baseCurrency;
 
   const sorted = [...people].sort((a,b)=>bal[a]-bal[b]);
   const lb = document.getElementById('leaderboard');
@@ -668,7 +1203,7 @@ function renderMain() {
               ${isMost?'<span class="badge badge-green">En çok ödedi</span>':''}
             </div>
             <div class="leader-right">
-              <div class="leader-amount">₺${paid[p].toFixed(0)}</div>
+              <div class="leader-amount">${currencySymbol()}${fromTRY(paid[p],baseCurrency).toFixed(0)}</div>
               <div class="leader-pct">%${pct.toFixed(0)}</div>
             </div>
           </div>
@@ -691,11 +1226,21 @@ function renderMain() {
         <div class="expense-item" style="animation-delay:${i*0.04}s">
           <div>
             <div class="expense-desc">${e.desc}</div>
-            <div class="expense-meta">${e.payer} ödedi · ${e.participants.length} kişi · kişi başı ₺${(e.amount/e.participants.length).toFixed(0)}</div>
+            <div class="expense-meta" style="display:flex;align-items:center;gap:6px;">
+              ${(()=>{const cat=CATEGORIES.find(x=>x.id===(e.cat||'food'));return cat?`<span class="cat-tag">${cat.emoji} ${cat.label}</span>`:''})()}
+              <span>${e.payer} ödedi · ${e.participants.length} kişi · kişi başı ₺${(e.amount/e.participants.length).toFixed(0)}</span>
+            </div>
           </div>
           <div class="expense-right">
             <div class="expense-amount">₺${e.amount.toFixed(0)}</div>
-            <button class="btn btn-danger" onclick="expenses.splice(${i},1);save();renderMain();">Sil</button>
+            <button class="btn btn-danger" onclick="expenses.splice(${i},1);save();// Init
+fetchRates();
+renderEmojis();
+if (tripName) {
+  setView('main');
+} else {
+  setView('onboarding');
+}">Sil</button>
           </div>
         </div>`;
     }).join('');
@@ -731,6 +1276,57 @@ function renderSettle() {
       </div>`;
   }).join('');
 
+  const catTotals = {};
+  CATEGORIES.forEach(cat => catTotals[cat.id] = 0);
+  expenses.forEach(e => { if (catTotals[e.cat||'food']!==undefined) catTotals[e.cat||'food'] += e.amount; });
+  document.getElementById('cat-chart').innerHTML = CATEGORIES
+    .filter(cat => catTotals[cat.id] > 0)
+    .sort((a,b) => catTotals[b.id]-catTotals[a.id])
+    .map((cat,i) => {
+      const pct = total>0 ? (catTotals[cat.id]/total*100) : 0;
+      return `
+        <div class="cat-bar-row">
+          <span class="cat-bar-emoji">${cat.emoji}</span>
+          <span class="cat-bar-name">${cat.label}</span>
+          <div class="cat-bar-wrap">
+            <div class="cat-bar-fill" style="width:${pct}%;background:${CAT_COLORS[i%CAT_COLORS.length]};"></div>
+          </div>
+          <span class="cat-bar-amount">₺${catTotals[cat.id].toFixed(0)} · %${pct.toFixed(0)}</span>
+        </div>`;
+    }).join('') || '<div class="empty-msg">Harcama yok.</div>';
+
+  // Timeline
+  const byDate = {};
+  expenses.forEach(e => {
+    const d = e.date || 'Tarih yok';
+    if (!byDate[d]) byDate[d] = [];
+    byDate[d].push(e);
+  });
+  const sortedDates = Object.keys(byDate).sort();
+  document.getElementById('timeline-chart').innerHTML = sortedDates.map(d => {
+    const dayTotal = byDate[d].reduce((s,e)=>s+e.amount,0);
+    const dateLabel = d === 'Tarih yok' ? 'Tarih yok' : new Date(d+'T12:00:00').toLocaleDateString('tr-TR', {day:'numeric',month:'long',weekday:'short'});
+    return `
+      <div class="timeline-day">
+        <div class="timeline-dot"></div>
+        <div class="timeline-date">${dateLabel} <span class="timeline-day-total">₺${dayTotal.toFixed(0)}</span></div>
+        ${byDate[d].map(e => {
+          const cat = CATEGORIES.find(x=>x.id===(e.cat||'food'));
+          return `
+            <div class="timeline-item">
+              <div class="timeline-item-left">
+                <span class="timeline-item-desc">${e.desc}</span>
+                <span class="timeline-item-meta">
+                  ${cat ? `<span>${cat.emoji}</span>` : ''}
+                  <span>${e.payer} ödedi</span>
+                </span>
+              </div>
+              <span class="timeline-item-amount">₺${e.amount.toFixed(0)}</span>
+            </div>`;
+        }).join('')}
+      </div>`;
+  }).join('') || '<div class="empty-msg">Harcama yok.</div>';
+
   const settlements = calcSettlements(bal);
   document.getElementById('settlement-list').innerHTML = settlements.length===0
     ? `<div class="empty-msg">Herkes eşit ödedi, borç yok!</div>`
@@ -741,11 +1337,18 @@ function renderSettle() {
           <span class="settlement-arrow"> → </span>
           <span class="to">${s.to}</span>
         </div>
-        <div class="settlement-amount">₺${s.amount.toFixed(0)}</div>
+        <div class="settlement-amount">${currencySymbol()}${fromTRY(s.amount,baseCurrency).toFixed(0)}</div>
       </div>`).join('');
 }
 
-renderMain();
+// Init
+fetchRates();
+renderEmojis();
+if (tripName) {
+  setView('main');
+} else {
+  setView('onboarding');
+}
 </script>
 </body>
 </html>
