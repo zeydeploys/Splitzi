@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tatil Kasası</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg: #0a0d12;
+  --surface: #111520;
+  --surface2: #181e2e;
+  --border: rgba(255,255,255,0.07);
+  --border2: rgba(255,255,255,0.12);
+  --text: #e8eaf0;
+  --muted: #6b7590;
+  --dim: #3a4260;
+  --accent: #4f8ef7;
+  --accent-bg: rgba(79,142,247,0.1);
+  --green: #3ecf8e;
+  --green-bg: rgba(62,207,142,0.1);
+  --red: #f75f5f;
+  --red-bg: rgba(247,95,95,0.1);
+  --amber: #f7b84f;
+  --amber-bg: rgba(247,184,79,0.1);
+  --purple: #a78bfa;
+  --purple-bg: rgba(167,139,250,0.1);
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 60% 40% at 10% 0%, rgba(79,142,247,0.08) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 30% at 90% 100%, rgba(62,207,142,0.06) 0%, transparent 60%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.app {
+  position: relative;
+  z-index: 1;
+  max-width: 520px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem 4rem;
+}
+
+/* HEADER */
+.header {
+  margin-bottom: 2rem;
+  opacity: 0;
+  animation: slideUp 0.6s ease forwards 0.1s;
+}
+
+.header-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+}
+
+.logo {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: -0.02em;
+}
+
+.logo span { color: var(--accent); }
+
+.total-badge {
+  text-align: right;
+}
+
+.total-label {
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 2px;
+}
+
+.total-amount {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: -0.02em;
+}
+
+.btn-row {
+  display: flex;
+  gap: 8px;
+}
+
+.btn {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 500;
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: 1px solid var(--border2);
+  background: var(--surface);
+  color: var(--text);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  letter-spacing: 0.01em;
+}
+
+.btn:hover { background: var(--surface2); border-color: rgba(255,255,255,0.2); }
+
+.btn-primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+.btn-primary:hover { background: #6fa3ff; border-color: #6fa3ff; }
+
+.btn-danger {
+  background: transparent;
+  border-color: rgba(247,95,95,0.3);
+  color: var(--red);
+  font-size: 0.75rem;
+  padding: 4px 10px;
+}
+
+.btn-danger:hover { background: var(--red-bg); }
+
+/* TABS */
+.tab { display: none; }
+.tab.active { display: block; }
+
+/* LEADERBOARD */
+.section-label {
+  font-size: 0.68rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 10px;
+  font-weight: 500;
+}
+
+.leader-card {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px 14px;
+  margin-bottom: 6px;
+  transition: border-color 0.2s;
+  animation: slideUp 0.4s ease forwards;
+  opacity: 0;
+}
+
+.leader-card.least { border-color: rgba(247,95,95,0.3); background: rgba(247,95,95,0.03); }
+.leader-card.most { border-color: rgba(62,207,142,0.3); background: rgba(62,207,142,0.03); }
+
+.leader-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.leader-left { display: flex; align-items: center; gap: 10px; }
+
+.avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 600;
+  font-family: 'Syne', sans-serif;
+  flex-shrink: 0;
+}
+
+.leader-name {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text);
+}
+
+.badge {
+  font-size: 0.65rem;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+}
+
+.badge-red { background: var(--red-bg); color: var(--red); border: 1px solid rgba(247,95,95,0.2); }
+.badge-green { background: var(--green-bg); color: var(--green); border: 1px solid rgba(62,207,142,0.2); }
+
+.leader-right { text-align: right; }
+
+.leader-amount {
+  font-family: 'Syne', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.leader-pct {
+  font-size: 0.7rem;
+  color: var(--muted);
+}
+
+.progress-bar {
+  height: 4px;
+  background: var(--surface2);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  border-radius: 999px;
+  transition: width 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* EXPENSES */
+.expense-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 14px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  margin-bottom: 5px;
+  animation: slideUp 0.3s ease forwards;
+  opacity: 0;
+}
+
+.expense-desc {
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: var(--text);
+}
+
+.expense-meta {
+  font-size: 0.72rem;
+  color: var(--muted);
+  margin-top: 2px;
+}
+
+.expense-right { display: flex; align-items: center; gap: 10px; }
+
+.expense-amount {
+  font-family: 'Syne', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+/* FORM */
+.form-card {
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  border-radius: 16px;
+  padding: 1.5rem;
+  animation: slideUp 0.4s ease forwards;
+}
+
+.form-group { margin-bottom: 14px; }
+
+.form-label {
+  font-size: 0.75rem;
+  color: var(--muted);
+  margin-bottom: 5px;
+  display: block;
+  letter-spacing: 0.04em;
+}
+
+.form-input, .form-select {
+  width: 100%;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.9rem;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--border2);
+  background: var(--surface2);
+  color: var(--text);
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.form-input:focus, .form-select:focus { border-color: var(--accent); }
+.form-select option { background: var(--surface2); }
+
+.checkbox-group { display: flex; flex-direction: column; gap: 8px; }
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.88rem;
+  color: var(--text);
+  cursor: pointer;
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  transition: all 0.2s;
+}
+
+.checkbox-label:hover { border-color: var(--border2); background: var(--surface2); }
+.checkbox-label input { width: 15px; height: 15px; accent-color: var(--accent); }
+
+/* PEOPLE */
+.people-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+
+.chip {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--surface2);
+  font-size: 0.78rem;
+  color: var(--text);
+}
+
+/* SETTLE VIEW */
+.summary-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 1.5rem;
+}
+
+.summary-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px 14px;
+}
+
+.summary-card-label {
+  font-size: 0.68rem;
+  color: var(--muted);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.summary-card-value {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.dist-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.dist-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+
+.dist-name { font-size: 0.85rem; color: var(--text); flex: 1; }
+
+.dist-bar-wrap { flex: 2; height: 5px; background: var(--surface2); border-radius: 999px; overflow: hidden; }
+
+.dist-bar { height: 100%; border-radius: 999px; transition: width 0.6s ease; }
+
+.dist-pct { font-size: 0.75rem; color: var(--muted); min-width: 32px; text-align: right; }
+
+.settlement-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 16px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  margin-bottom: 6px;
+}
+
+.settlement-names { font-size: 0.9rem; color: var(--text); }
+.settlement-names .from { color: var(--red); font-weight: 500; }
+.settlement-names .to { color: var(--green); font-weight: 500; }
+.settlement-arrow { color: var(--muted); }
+
+.settlement-amount {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+/* DIVIDER */
+.divider { height: 1px; background: var(--border); margin: 1.5rem 0; }
+
+/* ANIMATIONS */
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.empty-msg {
+  font-size: 0.85rem;
+  color: var(--muted);
+  padding: 8px 0;
+}
+
+/* RESPONSIVE */
+@media (max-width: 400px) {
+  .app { padding: 1.5rem 1rem 3rem; }
+  .total-amount { font-size: 1.3rem; }
+}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <div class="header">
+    <div class="header-top">
+      <div>
+        <div class="logo">Tatil <span>Kasası</span></div>
+      </div>
+      <div class="total-badge">
+        <div class="total-label">Toplam</div>
+        <div class="total-amount" id="total-display">₺0</div>
+      </div>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-primary" onclick="setView('add')">+ Harcama ekle</button>
+      <button class="btn" onclick="setView('settle')">Hesap kapat</button>
+      <button class="btn" onclick="setView('people')">Kişiler</button>
+    </div>
+  </div>
+
+  <!-- MAIN VIEW -->
+  <div id="view-main" class="tab active">
+    <div style="margin-bottom: 1.5rem; opacity:0; animation: slideUp 0.5s ease forwards 0.2s;">
+      <div class="section-label">Sıralama</div>
+      <div id="leaderboard"></div>
+    </div>
+    <div style="opacity:0; animation: slideUp 0.5s ease forwards 0.35s;">
+      <div class="section-label">Harcamalar</div>
+      <div id="expense-list"></div>
+      <div id="empty-msg" class="empty-msg">Henüz harcama yok. Ekle butonuna bas!</div>
+    </div>
+  </div>
+
+  <!-- ADD VIEW -->
+  <div id="view-add" class="tab">
+    <div class="section-label" style="margin-bottom:12px;">Yeni harcama</div>
+    <div class="form-card">
+      <div class="form-group">
+        <label class="form-label">Açıklama</label>
+        <input class="form-input" id="exp-desc" type="text" placeholder="Akşam yemeği, market, yakıt..." />
+      </div>
+      <div class="form-group">
+        <label class="form-label">Tutar (₺)</label>
+        <input class="form-input" id="exp-amount" type="number" placeholder="0" />
+      </div>
+      <div class="form-group">
+        <label class="form-label">Ödeyen</label>
+        <select class="form-select" id="exp-payer"></select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Kimler dahil?</label>
+        <div class="checkbox-group" id="participant-checks"></div>
+      </div>
+      <div style="display:flex; gap:8px; margin-top:4px;">
+        <button class="btn btn-primary" onclick="saveExpense()" style="flex:1;">Kaydet</button>
+        <button class="btn" onclick="setView('main')">Vazgeç</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- PEOPLE VIEW -->
+  <div id="view-people" class="tab">
+    <div class="section-label" style="margin-bottom:12px;">Katılımcılar</div>
+    <div class="form-card">
+      <div class="people-chips" id="people-chips"></div>
+      <div style="display:flex; gap:8px;">
+        <input class="form-input" id="new-person" type="text" placeholder="İsim ekle..." style="flex:1;" />
+        <button class="btn btn-primary" onclick="addPerson()">Ekle</button>
+      </div>
+    </div>
+    <div style="margin-top:12px;">
+      <button class="btn" onclick="setView('main')" style="width:100%;">Geri dön</button>
+    </div>
+  </div>
+
+  <!-- SETTLE VIEW -->
+  <div id="view-settle" class="tab">
+    <div class="section-label" style="margin-bottom:12px;">Tatil özeti</div>
+
+    <div class="summary-grid" id="summary-grid"></div>
+
+    <div style="margin-bottom:1.5rem;">
+      <div class="section-label">Harcama dağılımı</div>
+      <div id="dist-chart"></div>
+    </div>
+
+    <div style="margin-bottom:1.5rem;">
+      <div class="section-label">Kim kime ödemeli?</div>
+      <div id="settlement-list"></div>
+    </div>
+
+    <button class="btn" onclick="setView('main')" style="width:100%;margin-bottom:8px;">Geri dön</button>
+    <button class="btn btn-danger" onclick="if(confirm('Tüm verileri sıfırlamak istediğine emin misin?')){people=[];expenses=[];save();setView('main');}" style="width:100%;">Tüm verileri sıfırla</button>
+  </div>
+
+</div>
+
+<script>
+const COLORS = [
+  {color:'#4f8ef7', bg:'rgba(79,142,247,0.12)'},
+  {color:'#3ecf8e', bg:'rgba(62,207,142,0.12)'},
+  {color:'#f7b84f', bg:'rgba(247,184,79,0.12)'},
+  {color:'#a78bfa', bg:'rgba(167,139,250,0.12)'},
+  {color:'#f75f5f', bg:'rgba(247,95,95,0.12)'},
+  {color:'#06b6d4', bg:'rgba(6,182,212,0.12)'},
+];
+
+function save() {
+  localStorage.setItem('tatil_people', JSON.stringify(people));
+  localStorage.setItem('tatil_expenses', JSON.stringify(expenses));
+}
+
+function load() {
+  const p = localStorage.getItem('tatil_people');
+  const e = localStorage.getItem('tatil_expenses');
+  if (p) people = JSON.parse(p);
+  if (e) expenses = JSON.parse(e);
+}
+
+let people = ['Zeynep', 'Ali', 'Ayşe', 'Mert'];
+let expenses = [];
+load();
+
+function c(i) { return COLORS[i % COLORS.length]; }
+
+function calcBalances() {
+  const bal = {};
+  people.forEach(p => bal[p] = 0);
+  expenses.forEach(e => {
+    const share = e.amount / e.participants.length;
+    e.participants.forEach(p => { if (bal[p]!==undefined) bal[p] -= share; });
+    if (bal[e.payer]!==undefined) bal[e.payer] += e.amount;
+  });
+  return bal;
+}
+
+function calcPaid() {
+  const paid = {};
+  people.forEach(p => paid[p] = 0);
+  expenses.forEach(e => { if (paid[e.payer]!==undefined) paid[e.payer] += e.amount; });
+  return paid;
+}
+
+function calcSettlements(bal) {
+  const creds = [], debts = [];
+  Object.entries(bal).forEach(([p,b]) => {
+    if (b > 0.5) creds.push({p, b});
+    else if (b < -0.5) debts.push({p, b: -b});
+  });
+  const s = [];
+  let ci=0, di=0;
+  while (ci<creds.length && di<debts.length) {
+    const amt = Math.min(creds[ci].b, debts[di].b);
+    s.push({from:debts[di].p, to:creds[ci].p, amount:amt});
+    creds[ci].b-=amt; debts[di].b-=amt;
+    if (creds[ci].b<0.5) ci++;
+    if (debts[di].b<0.5) di++;
+  }
+  return s;
+}
+
+function setView(v) {
+  ['main','add','people','settle'].forEach(x => {
+    const el = document.getElementById('view-'+x);
+    el.classList.toggle('active', x===v);
+  });
+  if (v==='add') renderAdd();
+  if (v==='people') renderPeople();
+  if (v==='settle') renderSettle();
+  if (v==='main') renderMain();
+}
+
+function addPerson() {
+  const inp = document.getElementById('new-person');
+  const name = inp.value.trim();
+  if (!name || people.includes(name)) return;
+  people.push(name);
+  save();
+  inp.value = '';
+  renderPeople();
+}
+
+function saveExpense() {
+  const desc = document.getElementById('exp-desc').value.trim();
+  const amount = parseFloat(document.getElementById('exp-amount').value);
+  const payer = document.getElementById('exp-payer').value;
+  const participants = [...document.querySelectorAll('#participant-checks input:checked')].map(c=>c.value);
+  if (!desc || !amount || !payer || participants.length===0) return;
+  expenses.push({desc, amount, payer, participants});
+  save();
+  document.getElementById('exp-desc').value='';
+  document.getElementById('exp-amount').value='';
+  setView('main');
+}
+
+function renderAdd() {
+  document.getElementById('exp-payer').innerHTML = people.map(p=>`<option>${p}</option>`).join('');
+  document.getElementById('participant-checks').innerHTML = people.map(p=>`
+    <label class="checkbox-label">
+      <input type="checkbox" checked value="${p}"> ${p}
+    </label>`).join('');
+}
+
+function renderPeople() {
+  document.getElementById('people-chips').innerHTML = people.map((p,i)=>`
+    <div class="chip">
+      <div class="avatar" style="width:20px;height:20px;font-size:9px;background:${c(i).bg};color:${c(i).color};">${p[0]}</div>
+      ${p}
+    </div>`).join('');
+}
+
+function renderMain() {
+  const bal = calcBalances();
+  const paid = calcPaid();
+  const total = expenses.reduce((s,e)=>s+e.amount,0);
+
+  document.getElementById('total-display').textContent = `₺${total.toFixed(0)}`;
+
+  const sorted = [...people].sort((a,b)=>bal[a]-bal[b]);
+  const lb = document.getElementById('leaderboard');
+
+  if (total===0) { lb.innerHTML='<div class="empty-msg">Harcama ekleyince sıralama görünür.</div>'; }
+  else {
+    lb.innerHTML = sorted.map((p,i)=>{
+      const pi = people.indexOf(p);
+      const pct = total>0 ? (paid[p]/total*100) : 0;
+      const isLeast = i===0 && bal[p]<-0.5;
+      const isMost = i===sorted.length-1 && bal[p]>0.5;
+      return `
+        <div class="leader-card ${isLeast?'least':''} ${isMost?'most':''}" style="animation-delay:${i*0.05}s">
+          <div class="leader-top">
+            <div class="leader-left">
+              <div class="avatar" style="background:${c(pi).bg};color:${c(pi).color};">${p[0]}</div>
+              <span class="leader-name">${p}</span>
+              ${isLeast?'<span class="badge badge-red">Az ödedi</span>':''}
+              ${isMost?'<span class="badge badge-green">En çok ödedi</span>':''}
+            </div>
+            <div class="leader-right">
+              <div class="leader-amount">₺${paid[p].toFixed(0)}</div>
+              <div class="leader-pct">%${pct.toFixed(0)}</div>
+            </div>
+          </div>
+          <div class="progress-bar">
+            <div class="progress-fill" style="width:${pct}%;background:${c(pi).color};"></div>
+          </div>
+        </div>`;
+    }).join('');
+  }
+
+  const expList = document.getElementById('expense-list');
+  const emptyMsg = document.getElementById('empty-msg');
+  if (expenses.length===0) {
+    expList.innerHTML=''; emptyMsg.style.display='block';
+  } else {
+    emptyMsg.style.display='none';
+    expList.innerHTML = expenses.map((e,i)=>{
+      const pi = people.indexOf(e.payer);
+      return `
+        <div class="expense-item" style="animation-delay:${i*0.04}s">
+          <div>
+            <div class="expense-desc">${e.desc}</div>
+            <div class="expense-meta">${e.payer} ödedi · ${e.participants.length} kişi · kişi başı ₺${(e.amount/e.participants.length).toFixed(0)}</div>
+          </div>
+          <div class="expense-right">
+            <div class="expense-amount">₺${e.amount.toFixed(0)}</div>
+            <button class="btn btn-danger" onclick="expenses.splice(${i},1);save();renderMain();">Sil</button>
+          </div>
+        </div>`;
+    }).join('');
+  }
+}
+
+function renderSettle() {
+  const bal = calcBalances();
+  const paid = calcPaid();
+  const total = expenses.reduce((s,e)=>s+e.amount,0);
+
+  document.getElementById('summary-grid').innerHTML = [
+    {label:'Toplam harcama', value:`₺${total.toFixed(0)}`},
+    {label:'Kişi başı eşit pay', value:`₺${(total/people.length).toFixed(0)}`},
+    {label:'Toplam harcama sayısı', value:expenses.length},
+    {label:'Katılımcı sayısı', value:people.length},
+  ].map(x=>`
+    <div class="summary-card">
+      <div class="summary-card-label">${x.label}</div>
+      <div class="summary-card-value">${x.value}</div>
+    </div>`).join('');
+
+  document.getElementById('dist-chart').innerHTML = people.map((p,i)=>{
+    const pct = total>0 ? (paid[p]/total*100) : 0;
+    return `
+      <div class="dist-row">
+        <div class="dist-dot" style="background:${c(i).color};"></div>
+        <span class="dist-name">${p}</span>
+        <div class="dist-bar-wrap">
+          <div class="dist-bar" style="width:${pct}%;background:${c(i).color};"></div>
+        </div>
+        <span class="dist-pct">%${pct.toFixed(0)}</span>
+      </div>`;
+  }).join('');
+
+  const settlements = calcSettlements(bal);
+  document.getElementById('settlement-list').innerHTML = settlements.length===0
+    ? `<div class="empty-msg">Herkes eşit ödedi, borç yok!</div>`
+    : settlements.map(s=>`
+      <div class="settlement-item">
+        <div class="settlement-names">
+          <span class="from">${s.from}</span>
+          <span class="settlement-arrow"> → </span>
+          <span class="to">${s.to}</span>
+        </div>
+        <div class="settlement-amount">₺${s.amount.toFixed(0)}</div>
+      </div>`).join('');
+}
+
+renderMain();
+</script>
+</body>
+</html>
