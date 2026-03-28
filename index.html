@@ -5,6 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Splitzi</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<meta name="theme-color" content="#0a0d12">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Splitzi">
+<link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230a0d12'/><text y='.9em' font-size='80' x='10'>🌴</text></svg>">
+<link rel="manifest" href="data:application/json,{&quot;name&quot;:&quot;Splitzi&quot;,&quot;short_name&quot;:&quot;Splitzi&quot;,&quot;start_url&quot;:&quot;/&quot;,&quot;display&quot;:&quot;standalone&quot;,&quot;background_color&quot;:&quot;%230a0d12&quot;,&quot;theme_color&quot;:&quot;%234f8ef7&quot;,&quot;icons&quot;:[{&quot;src&quot;:&quot;data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230a0d12'/><text y='.9em' font-size='80' x='10'>🌴</text></svg>&quot;,&quot;sizes&quot;:&quot;192x192&quot;}]}">
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
 :root{--bg:#0a0d12;--surface:#111520;--surface2:#181e2e;--border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.12);--text:#e8eaf0;--muted:#6b7590;--accent:#4f8ef7;--accent-bg:rgba(79,142,247,0.1);--green:#3ecf8e;--green-bg:rgba(62,207,142,0.1);--red:#f75f5f;--red-bg:rgba(247,95,95,0.1);}
@@ -94,6 +100,12 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 .export-btn-row{display:flex;gap:8px;}
 .export-btn{flex:1;font-family:'DM Sans',sans-serif;font-size:0.85rem;font-weight:500;padding:10px;border-radius:8px;border:1px solid var(--border2);background:var(--surface2);color:var(--text);cursor:pointer;transition:all 0.2s;display:flex;align-items:center;justify-content:center;gap:6px;}
 .export-btn:hover{border-color:var(--accent);background:var(--accent-bg);color:var(--accent);}
+.invite-btn{display:flex;align-items:center;gap:8px;padding:10px 14px;border-radius:10px;border:1px solid rgba(62,207,142,0.3);background:rgba(62,207,142,0.08);color:var(--green);font-size:0.85rem;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;width:100%;justify-content:center;transition:all 0.2s;margin-bottom:8px;}
+.invite-btn:hover{background:rgba(62,207,142,0.15);}
+.install-btn{display:flex;align-items:center;gap:8px;padding:10px 14px;border-radius:10px;border:1px solid rgba(79,142,247,0.3);background:rgba(79,142,247,0.08);color:var(--accent);font-size:0.85rem;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;width:100%;justify-content:center;transition:all 0.2s;margin-bottom:8px;}
+.install-btn:hover{background:rgba(79,142,247,0.15);}
+.toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%);background:var(--surface2);border:1px solid var(--border2);color:var(--text);padding:10px 20px;border-radius:999px;font-size:0.85rem;z-index:9999;animation:toastIn 0.3s ease;pointer-events:none;}
+@keyframes toastIn{from{opacity:0;transform:translateX(-50%) translateY(10px);}to{opacity:1;transform:translateX(-50%) translateY(0);}}
 #export-snapshot{position:fixed;left:-9999px;top:0;width:400px;background:#0a0d12;padding:2rem;font-family:'DM Sans',sans-serif;}
 @media(max-width:400px){.app{padding:1rem 1rem 3rem;}.total-amount{font-size:1rem;}.btn{padding:6px 10px;font-size:0.78rem;}}
 </style>
@@ -150,10 +162,15 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
           <span id="badge-emoji">🌴</span>
           <span style="font-family:'Syne',sans-serif;font-size:0.85rem;font-weight:600;color:var(--text);" id="badge-name"></span>
         </div>
-        <div id="trip-code-badge" style="display:flex;align-items:center;gap:5px;padding:3px 8px;background:var(--surface2);border:1px solid var(--border);border-radius:999px;cursor:pointer;margin-top:4px;width:fit-content;" onclick="copyTripCode()" title="Kodu kopyala">
-          <span style="font-size:0.65rem;color:var(--muted);">KOD:</span>
-          <span style="font-family:'Syne',sans-serif;font-size:0.75rem;font-weight:700;color:var(--accent);letter-spacing:0.1em;" id="trip-code-display"></span>
-          <span style="font-size:0.65rem;color:var(--muted);">📋</span>
+        <div style="display:flex;align-items:center;gap:6px;margin-top:4px;">
+          <div id="trip-code-badge" style="display:flex;align-items:center;gap:5px;padding:3px 8px;background:var(--surface2);border:1px solid var(--border);border-radius:999px;cursor:pointer;" onclick="copyTripCode()" title="Kodu kopyala">
+            <span style="font-size:0.65rem;color:var(--muted);">KOD:</span>
+            <span style="font-family:'Syne',sans-serif;font-size:0.75rem;font-weight:700;color:var(--accent);letter-spacing:0.1em;" id="trip-code-display"></span>
+            <span style="font-size:0.65rem;color:var(--muted);">📋</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:4px;padding:3px 8px;background:rgba(62,207,142,0.08);border:1px solid rgba(62,207,142,0.25);border-radius:999px;cursor:pointer;font-size:0.7rem;color:var(--green);font-weight:500;" onclick="inviteFriend()">
+            🔗 Davet et
+          </div>
         </div>
       </div>
       <div class="total-badge">
@@ -311,6 +328,12 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
   <div style="margin-bottom:1.5rem;"><div class="section-label" id="lbl-cat-dist">Kategori bazlı dağılım</div><div id="cat-chart"></div></div>
   <div style="margin-bottom:1.5rem;"><div class="section-label" id="lbl-daily">Günlük akış</div><div id="timeline-chart"></div></div>
   <div style="margin-bottom:1.5rem;"><div class="section-label" id="lbl-who-owes">Kim kime ödemeli?</div><div id="settlement-list"></div></div>
+  <button class="invite-btn" id="invite-btn" onclick="inviteFriend()">
+    🔗 Arkadaşını davet et
+  </button>
+  <button class="install-btn" id="install-btn" onclick="installPWA()" style="display:none;">
+    📱 Telefona yükle
+  </button>
   <div class="export-btn-row" style="margin-bottom:12px;">
     <button class="export-btn" onclick="exportPNG()">🖼 PNG</button>
     <button class="export-btn" onclick="exportPDF()">📄 PDF</button>
@@ -359,7 +382,7 @@ function setView(v){['onboarding','main','people','add','edit','settle'].forEach
 
 function setLang(l){lang=l;localStorage.setItem('splitzi_lang',l);['btn-tr','btn-tr-ob'].forEach(id=>{const el=document.getElementById(id);if(el)el.classList.toggle('active',l==='tr');});['btn-en','btn-en-ob'].forEach(id=>{const el=document.getElementById(id);if(el)el.classList.toggle('active',l==='en');});applyLang();const active=['main','people','add','settle','onboarding'].find(x=>document.getElementById('view-'+x)?.classList.contains('active'));if(active&&active!=='onboarding')setView(active);}
 
-function applyLang(){const map={'btn-people':'people','btn-add':'addExpense','btn-settle':'settle','lbl-total':'total','lbl-rank':'rank','lbl-expenses':'expenses','lbl-participants':'participants','lbl-new-expense':'newExpense','lbl-desc':'desc','lbl-amount':'amount','lbl-currency':'currency','lbl-date':'date','lbl-payer':'payer','lbl-who':'who','lbl-category':'category','btn-save':'save','btn-cancel':'cancel','lbl-receipt':'receipt','lbl-reading':'reading','lbl-summary-title':'summaryTitle','lbl-person-dist':'personDist','lbl-cat-dist':'catDist','lbl-daily':'daily','lbl-who-owes':'whoOwes','btn-reset':'resetAll','btn-back-people':'back','btn-back-settle':'back','btn-addperson':'add','ob-title':'createTrip','ob-sub':'tripSub','ob-start-btn':'start'};Object.entries(map).forEach(([id,k])=>{const el=document.getElementById(id);if(el)el.textContent=t(k);});const inp=document.getElementById('new-person');if(inp)inp.placeholder=t('addName');const di=document.getElementById('exp-desc');if(di)di.placeholder=t('descPh');const ti=document.getElementById('trip-name-input');if(ti)ti.placeholder=lang==='en'?'e.g. Bodrum 2025...':'Ör: Bodrum 2025...';const jt=document.getElementById('ob-join-title');if(jt)jt.textContent=lang==='en'?"Join your friend":'Arkadaşına katıl';const js=document.getElementById('ob-join-sub');if(js)js.textContent=lang==='en'?'Enter the code they sent you, join instantly 🚀':'Sana gönderilen kodu gir, anında dahil ol 🚀';const jc=document.getElementById('join-code-input');if(jc)jc.placeholder=lang==='en'?'Paste code here...':'Kodu buraya yapıştır...';const jb=document.getElementById('ob-join-btn');if(jb)jb.textContent=lang==='en'?'Join →':'Katıl →';const obor=document.getElementById('ob-or');if(obor)obor.textContent=lang==='en'?'or':'veya';const em=document.getElementById('empty-msg');if(em&&expenses.length===0)em.textContent=t('noExpense');const pe=document.getElementById('people-empty');if(pe)pe.textContent=t('nobodyYet');const rh=document.getElementById('lbl-receipt-hint');if(rh)rh.innerHTML=lang==='en'?'Upload a photo, <span style="color:var(--accent);">AI will fill it in</span>':'Fotoğraf yükle, <span style="color:var(--accent);">AI otomatik doldursun</span>';const rh2=document.getElementById('lbl-edit-receipt-hint');if(rh2)rh2.innerHTML=lang==='en'?'Upload a photo, <span style="color:var(--accent);">AI will fill it in</span>':'Fotoğraf yükle, <span style="color:var(--accent);">AI otomatik doldursun</span>';}
+function applyLang(){const map={'btn-people':'people','btn-add':'addExpense','btn-settle':'settle','lbl-total':'total','lbl-rank':'rank','lbl-expenses':'expenses','lbl-participants':'participants','lbl-new-expense':'newExpense','lbl-desc':'desc','lbl-amount':'amount','lbl-currency':'currency','lbl-date':'date','lbl-payer':'payer','lbl-who':'who','lbl-category':'category','btn-save':'save','btn-cancel':'cancel','lbl-receipt':'receipt','lbl-reading':'reading','lbl-summary-title':'summaryTitle','lbl-person-dist':'personDist','lbl-cat-dist':'catDist','lbl-daily':'daily','lbl-who-owes':'whoOwes','btn-reset':'resetAll','btn-back-people':'back','btn-back-settle':'back','btn-addperson':'add','ob-title':'createTrip','ob-sub':'tripSub','ob-start-btn':'start'};Object.entries(map).forEach(([id,k])=>{const el=document.getElementById(id);if(el)el.textContent=t(k);});const inp=document.getElementById('new-person');if(inp)inp.placeholder=t('addName');const di=document.getElementById('exp-desc');if(di)di.placeholder=t('descPh');const ti=document.getElementById('trip-name-input');if(ti)ti.placeholder=lang==='en'?'e.g. Bodrum 2025...':'Ör: Bodrum 2025...';const jt=document.getElementById('ob-join-title');if(jt)jt.textContent=lang==='en'?"Join your friend":'Arkadaşına katıl';const js=document.getElementById('ob-join-sub');if(js)js.textContent=lang==='en'?'Enter the code they sent you, join instantly 🚀':'Sana gönderilen kodu gir, anında dahil ol 🚀';const jc=document.getElementById('join-code-input');if(jc)jc.placeholder=lang==='en'?'Paste code here...':'Kodu buraya yapıştır...';const jb=document.getElementById('ob-join-btn');if(jb)jb.textContent=lang==='en'?'Join →':'Katıl →';const obor=document.getElementById('ob-or');if(obor)obor.textContent=lang==='en'?'or':'veya';const ib=document.getElementById('invite-btn');if(ib)ib.textContent=lang==='en'?'🔗 Invite a friend':'🔗 Arkadaşını davet et';const pb=document.getElementById('install-btn');if(pb&&pb.style.display!=='none')pb.textContent=lang==='en'?'📱 Install app':'📱 Telefona yükle';const em=document.getElementById('empty-msg');if(em&&expenses.length===0)em.textContent=t('noExpense');const pe=document.getElementById('people-empty');if(pe)pe.textContent=t('nobodyYet');const rh=document.getElementById('lbl-receipt-hint');if(rh)rh.innerHTML=lang==='en'?'Upload a photo, <span style="color:var(--accent);">AI will fill it in</span>':'Fotoğraf yükle, <span style="color:var(--accent);">AI otomatik doldursun</span>';const rh2=document.getElementById('lbl-edit-receipt-hint');if(rh2)rh2.innerHTML=lang==='en'?'Upload a photo, <span style="color:var(--accent);">AI will fill it in</span>':'Fotoğraf yükle, <span style="color:var(--accent);">AI otomatik doldursun</span>';}
 
 function renderEmojis(){document.getElementById('emoji-grid').innerHTML=EMOJIS.map(e=>`<button class="emoji-btn ${e===tripEmoji?'selected':''}" onclick="selectEmoji('${e}')">${e}</button>`).join('');}
 function selectEmoji(e){tripEmoji=e;document.getElementById('ob-emoji').textContent=e;renderEmojis();}
@@ -853,6 +876,68 @@ function copyTripCode() {
     el.textContent = '✓ Kopyalandı!';
     setTimeout(() => el.textContent = orig, 1500);
   });
+}
+
+// PWA & INVITE
+let deferredPrompt = null;
+
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+  const btn = document.getElementById('install-btn');
+  if (btn) btn.style.display = 'flex';
+});
+
+window.addEventListener('appinstalled', () => {
+  deferredPrompt = null;
+  const btn = document.getElementById('install-btn');
+  if (btn) btn.style.display = 'none';
+});
+
+async function installPWA() {
+  if (!deferredPrompt) {
+    showToast(lang==='en' ? 'Already installed or not supported' : 'Zaten yüklü veya desteklenmiyor');
+    return;
+  }
+  deferredPrompt.prompt();
+  const { outcome } = await deferredPrompt.userChoice;
+  if (outcome === 'accepted') showToast(lang==='en' ? 'Splitzi installed! 🎉' : 'Splitzi yüklendi! 🎉');
+  deferredPrompt = null;
+  const btn = document.getElementById('install-btn');
+  if (btn) btn.style.display = 'none';
+}
+
+function inviteFriend() {
+  if (!tripId) return;
+  const msg = lang==='en'
+    ? `Join me on Splitzi! 🌴\nCode: ${tripId}\nsplitzi.fun`
+    : `Splitzi'de bana katıl! 🌴\nKod: ${tripId}\nsplitzi.fun`;
+
+  if (navigator.share) {
+    navigator.share({ title: 'Splitzi', text: msg, url: 'https://splitzi.fun' })
+      .catch(() => fallbackInvite(msg));
+  } else {
+    fallbackInvite(msg);
+  }
+}
+
+function fallbackInvite(msg) {
+  navigator.clipboard.writeText(msg).then(() => {
+    showToast(lang==='en' ? 'Copied! Share with your friends 🚀' : 'Kopyalandı! Arkadaşlarına at 🚀');
+  }).catch(() => {
+    const url = `https://wa.me/?text=${encodeURIComponent(msg)}`;
+    window.open(url, '_blank');
+  });
+}
+
+function showToast(msg) {
+  const existing = document.querySelector('.toast');
+  if (existing) existing.remove();
+  const toast = document.createElement('div');
+  toast.className = 'toast';
+  toast.textContent = msg;
+  document.body.appendChild(toast);
+  setTimeout(() => toast.remove(), 2500);
 }
 
 // INIT
