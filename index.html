@@ -360,7 +360,7 @@ function updateBadge(){document.getElementById('badge-emoji').textContent=tripEm
 function resetAll(){if(confirm(lang==='en'?'Reset all data?':'Tüm verileri sıfırlamak istediğine emin misin?')){people=[];expenses=[];tripName='';tripEmoji='🌴';save();setView('onboarding');}}
 
 async function addPerson(){const inp=document.getElementById('new-person');const name=inp.value.trim();if(!name||people.includes(name))return;people.push(name);save();await addPersonDB(name);inp.value='';renderPeople();}
-function deletePerson(idx){const name=people[idx];if(expenses.some(e=>e.payer===name||e.participants.includes(name))){alert((lang==='en'?`${name} has expenses and cannot be deleted.`:`${name} adlı kişinin harcaması var, silinemez.`));return;}if(confirm(lang==='en'?`Delete ${name}?`:`${name} silinsin mi?`)){people.splice(idx,1);save();renderPeople();}}
+async function deletePerson(idx){const name=people[idx];if(expenses.some(e=>e.payer===name||e.participants.includes(name))){alert((lang==='en'?`${name} has expenses and cannot be deleted.`:`${name} adlı kişinin harcaması var, silinemez.`));return;}if(confirm(lang==='en'?`Delete ${name}?`:`${name} silinsin mi?`)){people.splice(idx,1);save();renderPeople();}}
 function renderPeople(){const list=document.getElementById('people-list');const empty=document.getElementById('people-empty');if(people.length===0){
     list.innerHTML='';
     empty.style.display='block';
@@ -489,7 +489,7 @@ async function handleEditReceipt(event) {
   reader.readAsDataURL(file);
 }
 
-function saveEdit() {
+async function saveEdit() {
   const desc = document.getElementById('edit-desc').value.trim();
   const amount = parseFloat(document.getElementById('edit-amount').value);
   const payer = document.getElementById('edit-payer').value;
