@@ -103,8 +103,14 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 <body>
 <div class="app">
 
-<div id="view-onboarding" class="view">
+<div id="view-onboarding" class="view" style="position:relative;">
   <div class="onboarding">
+    <div style="position:absolute;top:1.5rem;right:1.5rem;">
+      <div class="lang-toggle">
+        <button class="lang-btn" id="btn-tr-ob" onclick="setLang('tr')">TR</button>
+        <button class="lang-btn" id="btn-en-ob" onclick="setLang('en')">EN</button>
+      </div>
+    </div>
     <div id="ob-emoji" style="font-size:3rem;margin-bottom:1rem;">🌴</div>
     <div class="onboarding-title" id="ob-title">Tatilini oluştur</div>
     <div class="onboarding-sub" id="ob-sub">Bir isim ver ve emoji seç</div>
@@ -113,14 +119,17 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
     </div>
     <div class="emoji-grid" id="emoji-grid"></div>
     <button class="btn btn-primary" id="ob-start-btn" onclick="createTrip()" style="width:100%;padding:12px;margin-bottom:12px;">Başla →</button>
-    <div style="display:flex;align-items:center;gap:10px;width:100%;margin-bottom:12px;">
+    <div style="display:flex;align-items:center;gap:10px;width:100%;margin-bottom:16px;">
       <div style="flex:1;height:1px;background:var(--border);"></div>
       <span style="font-size:0.75rem;color:var(--muted);" id="ob-or">veya</span>
       <div style="flex:1;height:1px;background:var(--border);"></div>
     </div>
-    <div style="width:100%;">
-      <input class="form-input" id="join-code-input" type="text" placeholder="Oda kodu gir (örn: BODRUM24)" style="text-align:center;font-size:1rem;margin-bottom:8px;text-transform:uppercase;" oninput="this.value=this.value.toUpperCase()">
-      <button class="btn" id="ob-join-btn" onclick="joinTrip()" style="width:100%;padding:12px;">Katıl →</button>
+    <div style="width:100%;background:var(--surface);border:1px solid var(--border2);border-radius:16px;padding:1.2rem;">
+      <div style="font-size:1.2rem;margin-bottom:4px;">🔑</div>
+      <div style="font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;color:var(--text);margin-bottom:4px;" id="ob-join-title">Arkadaşına katıl</div>
+      <div style="font-size:0.8rem;color:var(--muted);margin-bottom:12px;" id="ob-join-sub">Sana gönderilen kodu gir, anında dahil ol 🚀</div>
+      <input class="form-input" id="join-code-input" type="text" placeholder="Kodu buraya yapıştır..." style="text-align:center;font-size:1.1rem;font-weight:700;letter-spacing:0.15em;margin-bottom:8px;font-family:'Syne',sans-serif;" oninput="this.value=this.value.toUpperCase()">
+      <button class="btn btn-primary" id="ob-join-btn" onclick="joinTrip()" style="width:100%;padding:10px;">Katıl →</button>
     </div>
     <div id="ob-error" style="color:var(--red);font-size:0.8rem;margin-top:8px;min-height:20px;"></div>
   </div>
@@ -348,9 +357,9 @@ function totalTRY(){return expenses.reduce((s,e)=>s+toTRY(e.amount,e.currency||'
 
 function setView(v){['onboarding','main','people','add','edit','settle'].forEach(x=>{const el=document.getElementById('view-'+x);if(el)el.classList.toggle('active',x===v);});if(v==='main')renderMain();if(v==='people')renderPeople();if(v==='add')renderAdd();if(v==='edit')renderEditView();if(v==='settle')renderSettle();}
 
-function setLang(l){lang=l;localStorage.setItem('splitzi_lang',l);document.getElementById('btn-tr').classList.toggle('active',l==='tr');document.getElementById('btn-en').classList.toggle('active',l==='en');applyLang();const active=['main','people','add','settle'].find(x=>document.getElementById('view-'+x).classList.contains('active'));if(active)setView(active);}
+function setLang(l){lang=l;localStorage.setItem('splitzi_lang',l);['btn-tr','btn-tr-ob'].forEach(id=>{const el=document.getElementById(id);if(el)el.classList.toggle('active',l==='tr');});['btn-en','btn-en-ob'].forEach(id=>{const el=document.getElementById(id);if(el)el.classList.toggle('active',l==='en');});applyLang();const active=['main','people','add','settle','onboarding'].find(x=>document.getElementById('view-'+x)?.classList.contains('active'));if(active&&active!=='onboarding')setView(active);}
 
-function applyLang(){const map={'btn-people':'people','btn-add':'addExpense','btn-settle':'settle','lbl-total':'total','lbl-rank':'rank','lbl-expenses':'expenses','lbl-participants':'participants','lbl-new-expense':'newExpense','lbl-desc':'desc','lbl-amount':'amount','lbl-currency':'currency','lbl-date':'date','lbl-payer':'payer','lbl-who':'who','lbl-category':'category','btn-save':'save','btn-cancel':'cancel','lbl-receipt':'receipt','lbl-reading':'reading','lbl-summary-title':'summaryTitle','lbl-person-dist':'personDist','lbl-cat-dist':'catDist','lbl-daily':'daily','lbl-who-owes':'whoOwes','btn-reset':'resetAll','btn-back-people':'back','btn-back-settle':'back','btn-addperson':'add','ob-title':'createTrip','ob-sub':'tripSub','ob-start-btn':'start'};Object.entries(map).forEach(([id,k])=>{const el=document.getElementById(id);if(el)el.textContent=t(k);});const inp=document.getElementById('new-person');if(inp)inp.placeholder=t('addName');const di=document.getElementById('exp-desc');if(di)di.placeholder=t('descPh');const ti=document.getElementById('trip-name-input');if(ti)ti.placeholder='Ör: Bodrum 2025...';const em=document.getElementById('empty-msg');if(em&&expenses.length===0)em.textContent=t('noExpense');const pe=document.getElementById('people-empty');if(pe)pe.textContent=t('nobodyYet');const rh=document.getElementById('lbl-receipt-hint');if(rh)rh.innerHTML=lang==='en'?'Upload a photo, <span style="color:var(--accent);">AI will fill it in</span>':'Fotoğraf yükle, <span style="color:var(--accent);">AI otomatik doldursun</span>';const rh2=document.getElementById('lbl-edit-receipt-hint');if(rh2)rh2.innerHTML=lang==='en'?'Upload a photo, <span style="color:var(--accent);">AI will fill it in</span>':'Fotoğraf yükle, <span style="color:var(--accent);">AI otomatik doldursun</span>';}
+function applyLang(){const map={'btn-people':'people','btn-add':'addExpense','btn-settle':'settle','lbl-total':'total','lbl-rank':'rank','lbl-expenses':'expenses','lbl-participants':'participants','lbl-new-expense':'newExpense','lbl-desc':'desc','lbl-amount':'amount','lbl-currency':'currency','lbl-date':'date','lbl-payer':'payer','lbl-who':'who','lbl-category':'category','btn-save':'save','btn-cancel':'cancel','lbl-receipt':'receipt','lbl-reading':'reading','lbl-summary-title':'summaryTitle','lbl-person-dist':'personDist','lbl-cat-dist':'catDist','lbl-daily':'daily','lbl-who-owes':'whoOwes','btn-reset':'resetAll','btn-back-people':'back','btn-back-settle':'back','btn-addperson':'add','ob-title':'createTrip','ob-sub':'tripSub','ob-start-btn':'start'};Object.entries(map).forEach(([id,k])=>{const el=document.getElementById(id);if(el)el.textContent=t(k);});const inp=document.getElementById('new-person');if(inp)inp.placeholder=t('addName');const di=document.getElementById('exp-desc');if(di)di.placeholder=t('descPh');const ti=document.getElementById('trip-name-input');if(ti)ti.placeholder=lang==='en'?'e.g. Bodrum 2025...':'Ör: Bodrum 2025...';const jt=document.getElementById('ob-join-title');if(jt)jt.textContent=lang==='en'?"Join your friend":'Arkadaşına katıl';const js=document.getElementById('ob-join-sub');if(js)js.textContent=lang==='en'?'Enter the code they sent you, join instantly 🚀':'Sana gönderilen kodu gir, anında dahil ol 🚀';const jc=document.getElementById('join-code-input');if(jc)jc.placeholder=lang==='en'?'Paste code here...':'Kodu buraya yapıştır...';const jb=document.getElementById('ob-join-btn');if(jb)jb.textContent=lang==='en'?'Join →':'Katıl →';const obor=document.getElementById('ob-or');if(obor)obor.textContent=lang==='en'?'or':'veya';const em=document.getElementById('empty-msg');if(em&&expenses.length===0)em.textContent=t('noExpense');const pe=document.getElementById('people-empty');if(pe)pe.textContent=t('nobodyYet');const rh=document.getElementById('lbl-receipt-hint');if(rh)rh.innerHTML=lang==='en'?'Upload a photo, <span style="color:var(--accent);">AI will fill it in</span>':'Fotoğraf yükle, <span style="color:var(--accent);">AI otomatik doldursun</span>';const rh2=document.getElementById('lbl-edit-receipt-hint');if(rh2)rh2.innerHTML=lang==='en'?'Upload a photo, <span style="color:var(--accent);">AI will fill it in</span>':'Fotoğraf yükle, <span style="color:var(--accent);">AI otomatik doldursun</span>';}
 
 function renderEmojis(){document.getElementById('emoji-grid').innerHTML=EMOJIS.map(e=>`<button class="emoji-btn ${e===tripEmoji?'selected':''}" onclick="selectEmoji('${e}')">${e}</button>`).join('');}
 function selectEmoji(e){tripEmoji=e;document.getElementById('ob-emoji').textContent=e;renderEmojis();}
@@ -848,8 +857,8 @@ function copyTripCode() {
 
 // INIT
 load();fetchRates();renderEmojis();
-document.getElementById('btn-tr').classList.toggle('active',lang==='tr');
-document.getElementById('btn-en').classList.toggle('active',lang==='en');
+['btn-tr','btn-tr-ob'].forEach(id=>{const el=document.getElementById(id);if(el)el.classList.toggle('active',lang==='tr');});
+['btn-en','btn-en-ob'].forEach(id=>{const el=document.getElementById(id);if(el)el.classList.toggle('active',lang==='en');});
 applyLang();
 
 // Restore trip from localStorage
