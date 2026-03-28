@@ -4,41 +4,41 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Splitzi</title>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-<meta name="theme-color" content="#0a0d12">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<meta name="theme-color" content="#f0f9ff">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Splitzi">
-<link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230a0d12'/><text y='.9em' font-size='80' x='10'>🌴</text></svg>">
-<link rel="manifest" href="data:application/json,{&quot;name&quot;:&quot;Splitzi&quot;,&quot;short_name&quot;:&quot;Splitzi&quot;,&quot;start_url&quot;:&quot;/&quot;,&quot;display&quot;:&quot;standalone&quot;,&quot;background_color&quot;:&quot;%230a0d12&quot;,&quot;theme_color&quot;:&quot;%234f8ef7&quot;,&quot;icons&quot;:[{&quot;src&quot;:&quot;data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230a0d12'/><text y='.9em' font-size='80' x='10'>🌴</text></svg>&quot;,&quot;sizes&quot;:&quot;192x192&quot;}]}">
+<link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23e8f4fd'/><text y='.9em' font-size='80' x='10'>🌴</text></svg>">
+<link rel="manifest" href="data:application/json,{&quot;name&quot;:&quot;Splitzi&quot;,&quot;short_name&quot;:&quot;Splitzi&quot;,&quot;start_url&quot;:&quot;/&quot;,&quot;display&quot;:&quot;standalone&quot;,&quot;background_color&quot;:&quot;%23e8f4fd&quot;,&quot;theme_color&quot;:&quot;%234f8ef7&quot;,&quot;icons&quot;:[{&quot;src&quot;:&quot;data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23e8f4fd'/><text y='.9em' font-size='80' x='10'>🌴</text></svg>&quot;,&quot;sizes&quot;:&quot;192x192&quot;}]}">
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
-:root{--bg:#0a0d12;--surface:#111520;--surface2:#181e2e;--border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.12);--text:#e8eaf0;--muted:#6b7590;--accent:#4f8ef7;--accent-bg:rgba(79,142,247,0.1);--green:#3ecf8e;--green-bg:rgba(62,207,142,0.1);--red:#f75f5f;--red-bg:rgba(247,95,95,0.1);}
-body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased;}
-body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 60% 40% at 10% 0%,rgba(79,142,247,0.08) 0%,transparent 60%),radial-gradient(ellipse 40% 30% at 90% 100%,rgba(62,207,142,0.06) 0%,transparent 60%);pointer-events:none;z-index:0;}
+:root{--bg:#f0f9ff;--surface:#ffffff;--surface2:#e0f2fe;--border:rgba(14,165,233,0.18);--border2:rgba(14,165,233,0.3);--text:#0c1b2e;--muted:#5a8aaa;--accent:#0ea5e9;--accent-bg:rgba(14,165,233,0.1);--green:#10b981;--green-bg:rgba(16,185,129,0.1);--red:#f43f5e;--red-bg:rgba(244,63,94,0.1);--purple:#8b5cf6;--amber:#f59e0b;}
+body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased;}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 80% 55% at 50% -10%,rgba(56,189,248,0.15) 0%,transparent 55%),radial-gradient(ellipse 50% 40% at 100% 60%,rgba(139,92,246,0.07) 0%,transparent 50%),radial-gradient(ellipse 40% 35% at 0% 100%,rgba(16,185,129,0.06) 0%,transparent 50%);pointer-events:none;z-index:0;}
 .app{position:relative;z-index:1;max-width:520px;margin:0 auto;padding:2rem 1.5rem 4rem;}
 @keyframes slideUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
 .view{display:none;}.view.active{display:block;}
 .header{margin-bottom:2rem;animation:slideUp 0.6s ease forwards;}
 .header-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:1.2rem;}
-.logo{font-family:'Syne',sans-serif;font-size:1.4rem;font-weight:700;color:var(--text);}
+.logo{font-family:'Syne',sans-serif;font-size:1.5rem;font-weight:800;color:var(--text);letter-spacing:-0.02em;}
 .logo span{color:var(--accent);}
 .header-left{display:flex;align-items:center;gap:10px;}
 .lang-toggle{display:flex;gap:3px;background:var(--surface2);border:1px solid var(--border);border-radius:999px;padding:3px;}
-.lang-btn{font-size:0.7rem;font-weight:500;padding:3px 8px;border-radius:999px;border:none;background:transparent;color:var(--muted);cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s;}
+.lang-btn{font-size:0.7rem;font-weight:500;padding:3px 8px;border-radius:999px;border:none;background:transparent;color:var(--muted);cursor:pointer;font-family:'Nunito',sans-serif;transition:all 0.2s;}
 .lang-btn.active{background:var(--accent);color:#fff;}
 .trip-badge{display:flex;align-items:center;gap:6px;padding:4px 10px;background:var(--accent-bg);border:1px solid rgba(79,142,247,0.2);border-radius:999px;cursor:pointer;margin-top:6px;width:fit-content;}
 .total-badge{text-align:right;}
 .total-label{font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);margin-bottom:2px;}
 .total-amount{font-family:'Syne',sans-serif;font-size:1.3rem;font-weight:700;color:var(--text);word-break:break-all;}
 .btn-row{display:flex;gap:8px;flex-wrap:wrap;}
-.btn{font-family:'DM Sans',sans-serif;font-size:0.82rem;font-weight:500;padding:8px 14px;border-radius:8px;border:1px solid var(--border2);background:var(--surface);color:var(--text);cursor:pointer;transition:all 0.2s;}
+.btn{font-family:'Nunito',sans-serif;font-size:0.82rem;font-weight:500;padding:8px 14px;border-radius:8px;border:1px solid var(--border2);background:var(--surface);color:var(--text);cursor:pointer;transition:all 0.2s;}
 .btn:hover{background:var(--surface2);}
-.btn-primary{background:var(--accent);border-color:var(--accent);color:#fff;}
+.btn-primary{background:var(--accent);border-color:var(--accent);color:#fff;box-shadow:0 4px 14px rgba(14,165,233,0.3);}
 .btn-primary:hover{background:#6fa3ff;}
 .btn-danger{background:transparent;border-color:rgba(247,95,95,0.3);color:var(--red);font-size:0.75rem;padding:4px 10px;}
 .section-label{font-size:0.68rem;letter-spacing:0.18em;color:var(--muted);margin-bottom:10px;font-weight:500;}
-.leader-card{border:1px solid var(--border);border-radius:12px;padding:12px 14px;margin-bottom:6px;}
+.leader-card{border:1px solid var(--border);border-radius:16px;padding:12px 14px;margin-bottom:8px;box-shadow:0 2px 10px rgba(14,165,233,0.06);}
 .leader-card.least{border-color:rgba(247,95,95,0.3);background:rgba(247,95,95,0.03);}
 .leader-card.most{border-color:rgba(62,207,142,0.3);background:rgba(62,207,142,0.03);}
 .leader-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
@@ -49,27 +49,27 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 .badge-green{background:var(--green-bg);color:var(--green);border:1px solid rgba(62,207,142,0.2);}
 .progress-bar{height:4px;background:var(--surface2);border-radius:999px;overflow:hidden;}
 .progress-fill{height:100%;border-radius:999px;transition:width 0.6s ease;}
-.expense-item{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:var(--surface);border:1px solid var(--border);border-radius:10px;margin-bottom:5px;}
+.expense-item{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:var(--surface);border:1px solid var(--border);border-radius:14px;margin-bottom:6px;box-shadow:0 2px 8px rgba(14,165,233,0.05);}
 .expense-desc{font-size:0.88rem;font-weight:500;color:var(--text);}
 .expense-meta{font-size:0.72rem;color:var(--muted);margin-top:2px;display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
 .expense-right{display:flex;align-items:center;gap:8px;flex-shrink:0;}
 .expense-amount{font-family:'Syne',sans-serif;font-size:0.9rem;font-weight:600;color:var(--text);}
 .cat-tag{font-size:0.68rem;padding:2px 6px;border-radius:999px;background:var(--surface2);color:var(--muted);border:1px solid var(--border);}
 .empty-msg{font-size:0.85rem;color:var(--muted);padding:8px 0;}
-.form-card{background:var(--surface);border:1px solid var(--border2);border-radius:16px;padding:1.5rem;}
+.form-card{background:var(--surface);border:1px solid var(--border2);border-radius:20px;padding:1.5rem;box-shadow:0 4px 24px rgba(14,165,233,0.08);}
 .form-group{margin-bottom:14px;}
 .form-label{font-size:0.75rem;color:var(--muted);margin-bottom:5px;display:block;}
-.form-input,.form-select{width:100%;font-family:'DM Sans',sans-serif;font-size:0.9rem;padding:10px 12px;border-radius:8px;border:1px solid var(--border2);background:var(--surface2);color:var(--text);outline:none;transition:border-color 0.2s;}
+.form-input,.form-select{width:100%;font-family:'Nunito',sans-serif;font-size:0.9rem;padding:10px 12px;border-radius:8px;border:1px solid var(--border2);background:var(--surface2);color:var(--text);outline:none;transition:border-color 0.2s;}
 .form-input:focus,.form-select:focus{border-color:var(--accent);}
 .form-select option{background:var(--surface2);}
 .checkbox-label{display:flex;align-items:center;gap:10px;font-size:0.88rem;color:var(--text);cursor:pointer;padding:8px 12px;border-radius:8px;border:1px solid var(--border);margin-bottom:5px;}
 .cat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;}
-.cat-btn{display:flex;flex-direction:column;align-items:center;gap:4px;padding:8px 4px;border-radius:8px;border:1px solid var(--border);background:var(--surface2);cursor:pointer;font-family:'DM Sans',sans-serif;}
+.cat-btn{display:flex;flex-direction:column;align-items:center;gap:4px;padding:8px 4px;border-radius:8px;border:1px solid var(--border);background:var(--surface2);cursor:pointer;font-family:'Nunito',sans-serif;}
 .cat-btn.selected{border-color:var(--accent);background:var(--accent-bg);}
 .cat-btn .cat-emoji{font-size:1.3rem;}
 .cat-btn .cat-lbl{font-size:0.68rem;color:var(--muted);}
 .cat-btn.selected .cat-lbl{color:var(--accent);}
-.cur-btn{display:flex;align-items:center;gap:5px;padding:6px 10px;border-radius:8px;border:1px solid var(--border);background:var(--surface2);color:var(--muted);font-size:0.82rem;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;margin:0 4px 4px 0;}
+.cur-btn{display:flex;align-items:center;gap:5px;padding:6px 10px;border-radius:8px;border:1px solid var(--border);background:var(--surface2);color:var(--muted);font-size:0.82rem;font-weight:500;cursor:pointer;font-family:'Nunito',sans-serif;margin:0 4px 4px 0;}
 .cur-btn.selected{border-color:var(--accent);background:var(--accent-bg);color:var(--accent);}
 .receipt-upload{border:1.5px dashed var(--border2);border-radius:12px;padding:1rem;text-align:center;cursor:pointer;background:var(--surface2);position:relative;}
 .receipt-upload input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
@@ -98,15 +98,15 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 .export-card-title{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;color:var(--text);margin-bottom:4px;}
 .export-card-sub{font-size:0.8rem;color:var(--muted);margin-bottom:1rem;}
 .export-btn-row{display:flex;gap:8px;}
-.export-btn{flex:1;font-family:'DM Sans',sans-serif;font-size:0.85rem;font-weight:500;padding:10px;border-radius:8px;border:1px solid var(--border2);background:var(--surface2);color:var(--text);cursor:pointer;transition:all 0.2s;display:flex;align-items:center;justify-content:center;gap:6px;}
+.export-btn{flex:1;font-family:'Nunito',sans-serif;font-size:0.85rem;font-weight:500;padding:10px;border-radius:8px;border:1px solid var(--border2);background:var(--surface2);color:var(--text);cursor:pointer;transition:all 0.2s;display:flex;align-items:center;justify-content:center;gap:6px;}
 .export-btn:hover{border-color:var(--accent);background:var(--accent-bg);color:var(--accent);}
-.invite-btn{display:flex;align-items:center;gap:8px;padding:10px 14px;border-radius:10px;border:1px solid rgba(62,207,142,0.3);background:rgba(62,207,142,0.08);color:var(--green);font-size:0.85rem;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;width:100%;justify-content:center;transition:all 0.2s;margin-bottom:8px;}
+.invite-btn{display:flex;align-items:center;gap:8px;padding:10px 14px;border-radius:10px;border:1px solid rgba(62,207,142,0.3);background:rgba(62,207,142,0.08);color:var(--green);font-size:0.85rem;font-weight:500;cursor:pointer;font-family:'Nunito',sans-serif;width:100%;justify-content:center;transition:all 0.2s;margin-bottom:8px;}
 .invite-btn:hover{background:rgba(62,207,142,0.15);}
-.install-btn{display:flex;align-items:center;gap:8px;padding:10px 14px;border-radius:10px;border:1px solid rgba(79,142,247,0.3);background:rgba(79,142,247,0.08);color:var(--accent);font-size:0.85rem;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;width:100%;justify-content:center;transition:all 0.2s;margin-bottom:8px;}
+.install-btn{display:flex;align-items:center;gap:8px;padding:10px 14px;border-radius:10px;border:1px solid rgba(79,142,247,0.3);background:rgba(79,142,247,0.08);color:var(--accent);font-size:0.85rem;font-weight:500;cursor:pointer;font-family:'Nunito',sans-serif;width:100%;justify-content:center;transition:all 0.2s;margin-bottom:8px;}
 .install-btn:hover{background:rgba(79,142,247,0.15);}
 .toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%);background:var(--surface2);border:1px solid var(--border2);color:var(--text);padding:10px 20px;border-radius:999px;font-size:0.85rem;z-index:9999;animation:toastIn 0.3s ease;pointer-events:none;}
 @keyframes toastIn{from{opacity:0;transform:translateX(-50%) translateY(10px);}to{opacity:1;transform:translateX(-50%) translateY(0);}}
-#export-snapshot{position:fixed;left:-9999px;top:0;width:400px;background:#0a0d12;padding:2rem;font-family:'DM Sans',sans-serif;}
+#export-snapshot{position:fixed;left:-9999px;top:0;width:400px;background:#e8f4fd;padding:2rem;font-family:'Nunito',sans-serif;}
 @media(max-width:400px){.app{padding:1rem 1rem 3rem;}.total-amount{font-size:1rem;}.btn{padding:6px 10px;font-size:0.78rem;}}
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -206,7 +206,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
     </div>
   </div>
   <div style="margin-top:12px;">
-    <button class="btn" id="btn-back-people" onclick="setView('main')" style="width:100%;">Geri dön</button>
+    <button class="btn btn-primary" id="btn-back-people" onclick="setView('main')" style="width:100%;">Harcamalara Geç →</button>
   </div>
 </div>
 
@@ -352,8 +352,8 @@ const VERSION='v2';
 const EMOJIS=['🌴','🏖','🏔','🗺','✈️','🚢','🏕','🌊','🏙','🌅','🎡','🍹'];
 const CURRENCIES=[{code:'TRY',symbol:'₺',flag:'🇹🇷',label:'TL'},{code:'USD',symbol:'$',flag:'🇺🇸',label:'USD'},{code:'EUR',symbol:'€',flag:'🇪🇺',label:'EUR'},{code:'GBP',symbol:'£',flag:'🇬🇧',label:'GBP'}];
 const CATS=[{id:'food',e:'🍽',tr:'Yemek',en:'Food'},{id:'travel',e:'🚗',tr:'Ulaşım',en:'Transport'},{id:'fun',e:'🎉',tr:'Eğlence',en:'Fun'},{id:'market',e:'🛒',tr:'Market',en:'Market'},{id:'hotel',e:'🏨',tr:'Konaklama',en:'Hotel'},{id:'sea',e:'🌊',tr:'Aktivite',en:'Activity'}];
-const CAT_COLORS=['#4f8ef7','#3ecf8e','#f7b84f','#a78bfa','#f75f5f','#06b6d4'];
-const PAL=[{c:'#4f8ef7',bg:'rgba(79,142,247,0.12)'},{c:'#3ecf8e',bg:'rgba(62,207,142,0.12)'},{c:'#f7b84f',bg:'rgba(247,184,79,0.12)'},{c:'#a78bfa',bg:'rgba(167,139,250,0.12)'},{c:'#f75f5f',bg:'rgba(247,95,95,0.12)'},{c:'#06b6d4',bg:'rgba(6,182,212,0.12)'}];
+const CAT_COLORS=['#0ea5e9','#f59e0b','#f43f5e','#10b981','#8b5cf6','#06b6d4'];
+const PAL=[{c:'#0ea5e9',bg:'rgba(14,165,233,0.12)'},{c:'#10b981',bg:'rgba(16,185,129,0.12)'},{c:'#f43f5e',bg:'rgba(244,63,94,0.12)'},{c:'#f59e0b',bg:'rgba(245,158,11,0.12)'},{c:'#8b5cf6',bg:'rgba(139,92,246,0.12)'},{c:'#06b6d4',bg:'rgba(6,182,212,0.12)'}];
 function pal(i){return PAL[i%PAL.length];}
 
 let people=[],expenses=[],tripName='',tripEmoji='🌴',selCat='food',selCur='TRY';
@@ -382,7 +382,7 @@ function setView(v){['onboarding','main','people','add','edit','settle'].forEach
 
 function setLang(l){lang=l;localStorage.setItem('splitzi_lang',l);['btn-tr','btn-tr-ob'].forEach(id=>{const el=document.getElementById(id);if(el)el.classList.toggle('active',l==='tr');});['btn-en','btn-en-ob'].forEach(id=>{const el=document.getElementById(id);if(el)el.classList.toggle('active',l==='en');});applyLang();const active=['main','people','add','settle','onboarding'].find(x=>document.getElementById('view-'+x)?.classList.contains('active'));if(active&&active!=='onboarding')setView(active);}
 
-function applyLang(){const map={'btn-people':'people','btn-add':'addExpense','btn-settle':'settle','lbl-total':'total','lbl-rank':'rank','lbl-expenses':'expenses','lbl-participants':'participants','lbl-new-expense':'newExpense','lbl-desc':'desc','lbl-amount':'amount','lbl-currency':'currency','lbl-date':'date','lbl-payer':'payer','lbl-who':'who','lbl-category':'category','btn-save':'save','btn-cancel':'cancel','lbl-receipt':'receipt','lbl-reading':'reading','lbl-summary-title':'summaryTitle','lbl-person-dist':'personDist','lbl-cat-dist':'catDist','lbl-daily':'daily','lbl-who-owes':'whoOwes','btn-reset':'resetAll','btn-back-people':'back','btn-back-settle':'back','btn-addperson':'add','ob-title':'createTrip','ob-sub':'tripSub','ob-start-btn':'start'};Object.entries(map).forEach(([id,k])=>{const el=document.getElementById(id);if(el)el.textContent=t(k);});const inp=document.getElementById('new-person');if(inp)inp.placeholder=t('addName');const di=document.getElementById('exp-desc');if(di)di.placeholder=t('descPh');const ti=document.getElementById('trip-name-input');if(ti)ti.placeholder=lang==='en'?'e.g. Bodrum 2025...':'Ör: Bodrum 2025...';const jt=document.getElementById('ob-join-title');if(jt)jt.textContent=lang==='en'?"Join your friend":'Arkadaşına katıl';const js=document.getElementById('ob-join-sub');if(js)js.textContent=lang==='en'?'Enter the code they sent you, join instantly 🚀':'Sana gönderilen kodu gir, anında dahil ol 🚀';const jc=document.getElementById('join-code-input');if(jc)jc.placeholder=lang==='en'?'Paste code here...':'Kodu buraya yapıştır...';const jb=document.getElementById('ob-join-btn');if(jb)jb.textContent=lang==='en'?'Join →':'Katıl →';const obor=document.getElementById('ob-or');if(obor)obor.textContent=lang==='en'?'or':'veya';const ib=document.getElementById('invite-btn');if(ib)ib.textContent=lang==='en'?'🔗 Invite a friend':'🔗 Arkadaşını davet et';const pb=document.getElementById('install-btn');if(pb&&pb.style.display!=='none')pb.textContent=lang==='en'?'📱 Install app':'📱 Telefona yükle';const em=document.getElementById('empty-msg');if(em&&expenses.length===0)em.textContent=t('noExpense');const pe=document.getElementById('people-empty');if(pe)pe.textContent=t('nobodyYet');const rh=document.getElementById('lbl-receipt-hint');if(rh)rh.innerHTML=lang==='en'?'Upload a photo, <span style="color:var(--accent);">AI will fill it in</span>':'Fotoğraf yükle, <span style="color:var(--accent);">AI otomatik doldursun</span>';const rh2=document.getElementById('lbl-edit-receipt-hint');if(rh2)rh2.innerHTML=lang==='en'?'Upload a photo, <span style="color:var(--accent);">AI will fill it in</span>':'Fotoğraf yükle, <span style="color:var(--accent);">AI otomatik doldursun</span>';}
+function applyLang(){const map={'btn-people':'people','btn-add':'addExpense','btn-settle':'settle','lbl-total':'total','lbl-rank':'rank','lbl-expenses':'expenses','lbl-participants':'participants','lbl-new-expense':'newExpense','lbl-desc':'desc','lbl-amount':'amount','lbl-currency':'currency','lbl-date':'date','lbl-payer':'payer','lbl-who':'who','lbl-category':'category','btn-save':'save','btn-cancel':'cancel','lbl-receipt':'receipt','lbl-reading':'reading','lbl-summary-title':'summaryTitle','lbl-person-dist':'personDist','lbl-cat-dist':'catDist','lbl-daily':'daily','lbl-who-owes':'whoOwes','btn-reset':'resetAll','btn-back-settle':'back','btn-addperson':'add','ob-title':'createTrip','ob-sub':'tripSub','ob-start-btn':'start'};Object.entries(map).forEach(([id,k])=>{const el=document.getElementById(id);if(el)el.textContent=t(k);});const bp=document.getElementById('btn-back-people');if(bp)bp.textContent=lang==='en'?'Next →':'Harcamalara Geç →';const inp=document.getElementById('new-person');if(inp)inp.placeholder=t('addName');const di=document.getElementById('exp-desc');if(di)di.placeholder=t('descPh');const ti=document.getElementById('trip-name-input');if(ti)ti.placeholder=lang==='en'?'e.g. Bodrum 2025...':'Ör: Bodrum 2025...';const jt=document.getElementById('ob-join-title');if(jt)jt.textContent=lang==='en'?"Join your friend":'Arkadaşına katıl';const js=document.getElementById('ob-join-sub');if(js)js.textContent=lang==='en'?'Enter the code they sent you, join instantly 🚀':'Sana gönderilen kodu gir, anında dahil ol 🚀';const jc=document.getElementById('join-code-input');if(jc)jc.placeholder=lang==='en'?'Paste code here...':'Kodu buraya yapıştır...';const jb=document.getElementById('ob-join-btn');if(jb)jb.textContent=lang==='en'?'Join →':'Katıl →';const obor=document.getElementById('ob-or');if(obor)obor.textContent=lang==='en'?'or':'veya';const ib=document.getElementById('invite-btn');if(ib)ib.textContent=lang==='en'?'🔗 Invite a friend':'🔗 Arkadaşını davet et';const pb=document.getElementById('install-btn');if(pb&&pb.style.display!=='none')pb.textContent=lang==='en'?'📱 Install app':'📱 Telefona yükle';const em=document.getElementById('empty-msg');if(em&&expenses.length===0)em.textContent=t('noExpense');const pe=document.getElementById('people-empty');if(pe)pe.textContent=t('nobodyYet');const rh=document.getElementById('lbl-receipt-hint');if(rh)rh.innerHTML=lang==='en'?'Upload a photo, <span style="color:var(--accent);">AI will fill it in</span>':'Fotoğraf yükle, <span style="color:var(--accent);">AI otomatik doldursun</span>';const rh2=document.getElementById('lbl-edit-receipt-hint');if(rh2)rh2.innerHTML=lang==='en'?'Upload a photo, <span style="color:var(--accent);">AI will fill it in</span>':'Fotoğraf yükle, <span style="color:var(--accent);">AI otomatik doldursun</span>';}
 
 function renderEmojis(){document.getElementById('emoji-grid').innerHTML=EMOJIS.map(e=>`<button class="emoji-btn ${e===tripEmoji?'selected':''}" onclick="selectEmoji('${e}')">${e}</button>`).join('');}
 function selectEmoji(e){tripEmoji=e;document.getElementById('ob-emoji').textContent=e;renderEmojis();}
@@ -391,7 +391,7 @@ function editTrip(){const name=prompt('Tatil adını değiştir:',tripName);if(n
 function updateBadge(){document.getElementById('badge-emoji').textContent=tripEmoji;document.getElementById('badge-name').textContent=tripName;const cd=document.getElementById('trip-code-display');if(cd&&tripId)cd.textContent=tripId;}
 function resetAll(){if(confirm(lang==='en'?'Reset all data?':'Tüm verileri sıfırlamak istediğine emin misin?')){people=[];expenses=[];tripName='';tripEmoji='🌴';save();setView('onboarding');}}
 
-async function addPerson(){const inp=document.getElementById('new-person');const name=inp.value.trim();if(!name||people.includes(name))return;people.push(name);save();await addPersonDB(name);inp.value='';renderPeople();}
+async function addPerson(){const bp=document.getElementById('btn-back-people');if(bp)bp.textContent=lang==='en'?'Next →':'Harcamalara Geç →';const inp=document.getElementById('new-person');const name=inp.value.trim();if(!name||people.includes(name))return;people.push(name);save();await addPersonDB(name);inp.value='';renderPeople();}
 async function deletePerson(idx){const name=people[idx];if(expenses.some(e=>e.payer===name||e.participants.includes(name))){alert((lang==='en'?`${name} has expenses and cannot be deleted.`:`${name} adlı kişinin harcaması var, silinemez.`));return;}if(confirm(lang==='en'?`Delete ${name}?`:`${name} silinsin mi?`)){people.splice(idx,1);save();renderPeople();}}
 function renderPeople(){const list=document.getElementById('people-list');const empty=document.getElementById('people-empty');if(people.length===0){
     list.innerHTML='';
@@ -594,7 +594,7 @@ function buildSnapshot() {
 
   const snap = document.getElementById('export-snapshot');
   snap.innerHTML = `
-    <div style="color:#e8eaf0;width:360px;font-family:'DM Sans',sans-serif;">
+    <div style="color:#e8eaf0;width:360px;font-family:'Nunito',sans-serif;">
 
       <!-- HEADER -->
       <div style="display:flex;align-items:center;gap:10px;margin-bottom:1.5rem;padding-bottom:1rem;border-bottom:1px solid rgba(255,255,255,0.07);">
@@ -706,7 +706,7 @@ async function exportPNG() {
   snap.style.left = '-9999px';
   await new Promise(r => setTimeout(r, 100));
   const canvas = await html2canvas(snap, {
-    backgroundColor: '#0a0d12',
+    backgroundColor: '#e8f4fd',
     scale: 2,
     useCORS: true,
     logging: false
@@ -723,7 +723,7 @@ async function exportPDF() {
   const snap = document.getElementById('export-snapshot');
   await new Promise(r => setTimeout(r, 100));
   const canvas = await html2canvas(snap, {
-    backgroundColor: '#0a0d12',
+    backgroundColor: '#e8f4fd',
     scale: 2,
     useCORS: true,
     logging: false
