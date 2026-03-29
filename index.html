@@ -130,6 +130,14 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 .invite-btn:hover{background:rgba(62,207,142,0.15);}
 .install-btn{display:flex;align-items:center;gap:8px;padding:10px 14px;border-radius:10px;border:1px solid rgba(79,142,247,0.3);background:rgba(79,142,247,0.08);color:var(--accent);font-size:0.85rem;font-weight:500;cursor:pointer;font-family:'Nunito',sans-serif;width:100%;justify-content:center;transition:all 0.2s;margin-bottom:8px;}
 .install-btn:hover{background:rgba(79,142,247,0.15);}
+.trip-card{background:var(--surface);border:1.5px solid var(--border);border-radius:18px;padding:14px 16px;margin-bottom:10px;cursor:pointer;transition:all 0.2s;display:flex;justify-content:space-between;align-items:center;box-shadow:0 3px 12px rgba(14,165,233,0.06);}
+.trip-card:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(14,165,233,0.12);border-color:var(--accent);}
+.trip-card:active{transform:scale(0.98);}
+.trip-card-left{display:flex;align-items:center;gap:12px;}
+.trip-card-emoji{font-size:2rem;width:48px;height:48px;display:flex;align-items:center;justify-content:center;background:var(--surface2);border-radius:14px;}
+.trip-card-name{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;color:var(--text);}
+.trip-card-meta{font-size:0.75rem;color:var(--muted);margin-top:2px;}
+.trip-card-code{font-size:0.7rem;font-weight:700;color:var(--accent);letter-spacing:0.1em;background:var(--accent-bg);padding:3px 8px;border-radius:999px;}
 .toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%);background:var(--surface2);border:1px solid var(--border2);color:var(--text);padding:10px 20px;border-radius:999px;font-size:0.85rem;z-index:9999;animation:toastIn 0.3s ease;pointer-events:none;}
 @keyframes toastIn{from{opacity:0;transform:translateX(-50%) translateY(10px);}to{opacity:1;transform:translateX(-50%) translateY(0);}}
 #export-snapshot{position:fixed;left:-9999px;top:0;width:400px;background:#e8f4fd;padding:2rem;font-family:'Nunito',sans-serif;}
@@ -177,6 +185,40 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
   </div>
 </div>
 
+<!-- TRIPS LIST VIEW -->
+<div id="view-trips" class="view">
+  <div style="animation:slideUp 0.5s ease forwards;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;">
+      <div class="logo">Split<span>zi</span></div>
+      <div class="lang-toggle">
+        <button class="lang-btn" id="btn-tr-trips" onclick="setLang('tr')">TR</button>
+        <button class="lang-btn" id="btn-en-trips" onclick="setLang('en')">EN</button>
+      </div>
+    </div>
+    <div style="margin-bottom:1.5rem;">
+      <div style="font-family:'Syne',sans-serif;font-size:1.3rem;font-weight:800;color:var(--text);margin-bottom:4px;" id="lbl-my-trips">Tatillerim</div>
+      <div style="font-size:0.85rem;color:var(--muted);" id="lbl-my-trips-sub">Geçmiş ve aktif tatillerin</div>
+    </div>
+    <div id="trips-list" style="margin-bottom:1.5rem;"></div>
+    <button class="btn btn-primary" id="btn-new-trip" onclick="startNewTrip()" style="width:100%;padding:14px;font-size:1rem;">+ Yeni tatil oluştur</button>
+    <div style="margin-top:12px;">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
+        <div style="flex:1;height:1px;background:var(--border);"></div>
+        <span style="font-size:0.75rem;color:var(--muted);" id="lbl-trips-or">veya</span>
+        <div style="flex:1;height:1px;background:var(--border);"></div>
+      </div>
+      <div style="background:var(--surface);border:1.5px solid var(--border2);border-radius:16px;padding:1.2rem;">
+        <div style="font-size:1.2rem;margin-bottom:4px;">🔑</div>
+        <div style="font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;color:var(--text);margin-bottom:4px;" id="lbl-trips-join-title">Arkadaşına katıl</div>
+        <div style="font-size:0.8rem;color:var(--muted);margin-bottom:12px;" id="lbl-trips-join-sub">Sana gönderilen kodu gir 🚀</div>
+        <input class="form-input" id="join-code-input2" type="text" placeholder="Kodu buraya yapıştır..." style="text-align:center;font-size:1rem;font-weight:700;letter-spacing:0.15em;margin-bottom:8px;font-family:'Syne',sans-serif;" oninput="this.value=this.value.toUpperCase()">
+        <button class="btn btn-primary" id="btn-join2" onclick="joinTripFromList()" style="width:100%;padding:10px;">Katıl →</button>
+        <div id="trips-error" style="color:var(--red);font-size:0.8rem;margin-top:8px;min-height:16px;"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div id="view-main" class="view">
   <div class="header">
     <div class="header-top">
@@ -193,6 +235,9 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
           <span style="font-family:'Syne',sans-serif;font-size:0.85rem;font-weight:600;color:var(--text);" id="badge-name"></span>
         </div>
         <div style="display:flex;align-items:center;gap:6px;margin-top:4px;">
+          <div style="display:flex;align-items:center;gap:4px;padding:3px 8px;background:var(--surface2);border:1px solid var(--border);border-radius:999px;cursor:pointer;font-size:0.7rem;color:var(--muted);font-weight:600;" onclick="setView('trips')">
+            🏖 Tatillerim
+          </div>
           <div id="trip-code-badge" style="display:flex;align-items:center;gap:5px;padding:3px 8px;background:var(--surface2);border:1px solid var(--border);border-radius:999px;cursor:pointer;" onclick="copyTripCode()" title="Kodu kopyala">
             <span style="font-size:0.65rem;color:var(--muted);">KOD:</span>
             <span style="font-family:'Syne',sans-serif;font-size:0.75rem;font-weight:700;color:var(--accent);letter-spacing:0.1em;" id="trip-code-display"></span>
@@ -408,7 +453,7 @@ function calcPaidTRY(){const paid={};people.forEach(p=>paid[p]=0);expenses.forEa
 function calcSettlements(){const byCur=calcByCur();const all=[];Object.entries(byCur).forEach(([cur,bal])=>{const creds=[],debts=[];Object.entries(bal).forEach(([p,b])=>{if(b>0.01)creds.push({p,b});else if(b<-0.01)debts.push({p,b:-b});});let ci=0,di=0;while(ci<creds.length&&di<debts.length){const amt=Math.min(creds[ci].b,debts[di].b);all.push({from:debts[di].p,to:creds[ci].p,amount:amt,currency:cur});creds[ci].b-=amt;debts[di].b-=amt;if(creds[ci].b<0.01)ci++;if(debts[di].b<0.01)di++;}});return all;}
 function totalTRY(){return expenses.reduce((s,e)=>s+toTRY(e.amount,e.currency||'TRY'),0);}
 
-function setView(v){['onboarding','main','people','add','edit','settle'].forEach(x=>{const el=document.getElementById('view-'+x);if(el)el.classList.toggle('active',x===v);});if(v==='main')renderMain();if(v==='people')renderPeople();if(v==='add')renderAdd();if(v==='edit')renderEditView();if(v==='settle')renderSettle();}
+function setView(v){['onboarding','trips','main','people','add','edit','settle'].forEach(x=>{const el=document.getElementById('view-'+x);if(el)el.classList.toggle('active',x===v);});if(v==='main')renderMain();if(v==='people')renderPeople();if(v==='add')renderAdd();if(v==='edit')renderEditView();if(v==='settle')renderSettle();}
 
 function setLang(l){lang=l;localStorage.setItem('splitzi_lang',l);['btn-tr','btn-tr-ob'].forEach(id=>{const el=document.getElementById(id);if(el)el.classList.toggle('active',l==='tr');});['btn-en','btn-en-ob'].forEach(id=>{const el=document.getElementById(id);if(el)el.classList.toggle('active',l==='en');});applyLang();const active=['main','people','add','settle','onboarding'].find(x=>document.getElementById('view-'+x)?.classList.contains('active'));if(active&&active!=='onboarding')setView(active);}
 
@@ -419,7 +464,7 @@ function selectEmoji(e){tripEmoji=e;document.getElementById('ob-emoji').textCont
 function createTrip(){const name=document.getElementById('trip-name-input').value.trim();if(!name){document.getElementById('trip-name-input').style.borderColor='var(--red)';return;}tripName=name;save();updateBadge();setView('people');}
 function editTrip(){const name=prompt('Tatil adını değiştir:',tripName);if(name&&name.trim()){tripName=name.trim();save();updateBadge();}}
 function updateBadge(){document.getElementById('badge-emoji').textContent=tripEmoji;document.getElementById('badge-name').textContent=tripName;const cd=document.getElementById('trip-code-display');if(cd&&tripId)cd.textContent=tripId;}
-function resetAll(){if(confirm(lang==='en'?'Reset all data?':'Tüm verileri sıfırlamak istediğine emin misin?')){people=[];expenses=[];tripName='';tripEmoji='🌴';save();setView('onboarding');}}
+function resetAll(){if(confirm(lang==='en'?'Reset all data?':'Tüm verileri sıfırlamak istediğine emin misin?')){if(tripId)removeMyTrip(tripId);people=[];expenses=[];tripName='';tripEmoji='🌴';tripId=null;localStorage.removeItem('splitzi_trip_id');save();setView('trips');}}
 
 async function addPerson(){const bp=document.getElementById('btn-back-people');if(bp)bp.textContent=lang==='en'?'Next →':'Harcamalara Geç →';const inp=document.getElementById('new-person');const name=inp.value.trim();if(!name||people.includes(name))return;people.push(name);save();await addPersonDB(name);inp.value='';renderPeople();}
 async function deletePerson(idx){const name=people[idx];if(expenses.some(e=>e.payer===name||e.participants.includes(name))){alert((lang==='en'?`${name} has expenses and cannot be deleted.`:`${name} adlı kişinin harcaması var, silinemez.`));return;}if(confirm(lang==='en'?`Delete ${name}?`:`${name} silinsin mi?`)){people.splice(idx,1);save();renderPeople();}}
@@ -775,6 +820,128 @@ async function exportPDF() {
   setTimeout(() => { win.print(); }, 500);
 }
 
+// DEVICE ID & TRIPS LIST
+function getDeviceId() {
+  let id = localStorage.getItem('splitzi_device_id');
+  if (!id) {
+    id = 'dev_' + Math.random().toString(36).substr(2, 12) + Date.now().toString(36);
+    localStorage.setItem('splitzi_device_id', id);
+  }
+  return id;
+}
+
+function getMyTrips() {
+  const raw = localStorage.getItem('splitzi_my_trips');
+  return raw ? JSON.parse(raw) : [];
+}
+
+function saveMyTrip(tripData) {
+  const trips = getMyTrips();
+  const existing = trips.findIndex(t => t.id === tripData.id);
+  if (existing >= 0) {
+    trips[existing] = {...trips[existing], ...tripData, updatedAt: Date.now()};
+  } else {
+    trips.unshift({...tripData, createdAt: Date.now(), updatedAt: Date.now()});
+  }
+  localStorage.setItem('splitzi_my_trips', JSON.stringify(trips));
+}
+
+function removeMyTrip(tripId) {
+  const trips = getMyTrips().filter(t => t.id !== tripId);
+  localStorage.setItem('splitzi_my_trips', JSON.stringify(trips));
+}
+
+function renderTripsList() {
+  const trips = getMyTrips();
+  const list = document.getElementById('trips-list');
+  if (trips.length === 0) {
+    list.innerHTML = `<div style="text-align:center;padding:2rem 1rem;">
+      <div style="font-size:2.5rem;margin-bottom:0.5rem;">🌴</div>
+      <div style="font-size:0.85rem;color:var(--muted);">${lang==='en'?'No trips yet. Create your first one!':'Henüz tatil yok. İlkini oluştur!'}</div>
+    </div>`;
+    return;
+  }
+  list.innerHTML = trips.map(trip => `
+    <div class="trip-card" onclick="openTrip('${trip.id}')">
+      <div class="trip-card-left">
+        <div class="trip-card-emoji">${trip.emoji || '🌴'}</div>
+        <div>
+          <div class="trip-card-name">${trip.name}</div>
+          <div class="trip-card-meta">${trip.expenseCount || 0} ${lang==='en'?'expenses':'harcama'} · ${trip.peopleCount || 0} ${lang==='en'?'people':'kişi'}</div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;">
+        <div class="trip-card-code">${trip.id}</div>
+        <button class="btn btn-danger" style="font-size:0.68rem;padding:2px 8px;" onclick="event.stopPropagation();deleteTrip('${trip.id}')">${lang==='en'?'Remove':'Kaldır'}</button>
+      </div>
+    </div>`).join('');
+}
+
+async function openTrip(id) {
+  const trips = getMyTrips();
+  const trip = trips.find(t => t.id === id);
+  if (!trip) return;
+  tripId = id;
+  tripName = trip.name;
+  tripEmoji = trip.emoji || '🌴';
+  localStorage.setItem('splitzi_trip_id', tripId);
+  await loadFromSupabase();
+  save();
+  updateBadge();
+  subscribeRealtime();
+  setView('main');
+}
+
+function deleteTrip(id) {
+  if (!confirm(lang==='en'?'Remove this trip from your list?':'Bu tatili listenden kaldır?')) return;
+  removeMyTrip(id);
+  if (tripId === id) {
+    tripId = null;
+    localStorage.removeItem('splitzi_trip_id');
+  }
+  renderTripsList();
+}
+
+function startNewTrip() {
+  tripId = null;
+  tripName = '';
+  tripEmoji = '🌴';
+  people = [];
+  expenses = [];
+  setView('onboarding');
+}
+
+async function joinTripFromList() {
+  const code = document.getElementById('join-code-input2').value.trim().toUpperCase();
+  const errEl = document.getElementById('trips-error');
+  errEl.textContent = '';
+  if (!code) { errEl.textContent = lang==='en'?'Please enter a code':'Lütfen kod gir'; return; }
+  const btn = document.getElementById('btn-join2');
+  btn.textContent = '...';
+  btn.disabled = true;
+
+  const { data, error } = await sb.from('trips').select('*').eq('id', code).single();
+  if (error || !data) {
+    errEl.textContent = lang==='en'?'Trip not found. Check the code!':'Tatil bulunamadı. Kodu kontrol et!';
+    btn.textContent = 'Katıl →';
+    btn.disabled = false;
+    return;
+  }
+
+  tripId = code;
+  tripName = data.name;
+  tripEmoji = data.emoji;
+  localStorage.setItem('splitzi_trip_id', tripId);
+  await loadFromSupabase();
+  save();
+  saveMyTrip({id: tripId, name: tripName, emoji: tripEmoji, expenseCount: expenses.length, peopleCount: people.length});
+  updateBadge();
+  subscribeRealtime();
+  setView('main');
+  btn.textContent = 'Katıl →';
+  btn.disabled = false;
+}
+
 // SUPABASE
 const SUPABASE_URL = 'https://gocjqnmzaxnhvjjjrcuz.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_GhFoQdJOGrCB7CHJFVJo6A_h90eh6iq';
@@ -801,11 +968,14 @@ async function createTrip() {
 
   tripId = generateTripCode();
   tripName = name;
+  people = [];
+  expenses = [];
 
   const { error } = await sb.from('trips').insert({ id: tripId, name: tripName, emoji: tripEmoji });
   if (error) { errEl.textContent = 'Hata: ' + error.message; btn.textContent = t('start'); btn.disabled=false; return; }
 
   localStorage.setItem('splitzi_trip_id', tripId);
+  saveMyTrip({id: tripId, name: tripName, emoji: tripEmoji, expenseCount: 0, peopleCount: 0});
   save();
   updateBadge();
   subscribeRealtime();
@@ -849,6 +1019,7 @@ async function loadFromSupabase() {
   if (pData) people = pData.map(p => p.name);
   if (eData) expenses = eData.map(e => ({ ...e, desc: e.description }));
   save();
+  if (tripId) saveMyTrip({id:tripId, name:tripName, emoji:tripEmoji, expenseCount:expenses.length, peopleCount:people.length});
 }
 
 function subscribeRealtime() {
@@ -979,10 +1150,21 @@ applyLang();
 // Restore trip from localStorage
 tripId = localStorage.getItem('splitzi_trip_id');
 updateBadge();
-if(tripId && tripName){
-  document.getElementById('trip-code-display').textContent = tripId;
-  subscribeRealtime();
-  setView('main');
+
+// Update lang toggles for trips view
+['btn-tr-trips'].forEach(id=>{const el=document.getElementById(id);if(el)el.classList.toggle('active',lang==='tr');});
+['btn-en-trips'].forEach(id=>{const el=document.getElementById(id);if(el)el.classList.toggle('active',lang==='en');});
+
+const myTrips = getMyTrips();
+if(myTrips.length > 0) {
+  renderTripsList();
+  if(tripId && tripName) {
+    document.getElementById('trip-code-display').textContent = tripId;
+    subscribeRealtime();
+    setView('main');
+  } else {
+    setView('trips');
+  }
 } else {
   setView('onboarding');
 }
