@@ -107,6 +107,29 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 .ai-dot:nth-child(2){animation-delay:0.15s;}.ai-dot:nth-child(3){animation-delay:0.3s;}
 @keyframes aiPulse{0%,100%{opacity:1;}50%{opacity:0.3;}}
 .people-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:0.5px solid var(--border);}
+/* WELCOME SCREENS */
+.welcome-screen{position:fixed;inset:0;background:#f0f9ff;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2rem;transition:opacity 0.4s ease;}
+.welcome-screen.hidden{opacity:0;pointer-events:none;}
+.welcome-slides{width:100%;max-width:380px;}
+.welcome-slide{display:none;text-align:center;animation:bounceIn 0.5s ease forwards;}
+.welcome-slide.active{display:block;}
+.welcome-emoji{font-size:5rem;margin-bottom:1.5rem;display:block;}
+.welcome-title{font-family:'Syne',sans-serif;font-size:1.8rem;font-weight:800;margin-bottom:0.75rem;background:linear-gradient(135deg,#0ea5e9,#6366f1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1.1;}
+.welcome-sub{font-size:0.95rem;color:#5a8aaa;line-height:1.6;margin-bottom:2.5rem;font-weight:500;}
+.welcome-features{display:flex;flex-direction:column;gap:10px;margin-bottom:2.5rem;text-align:left;}
+.welcome-feature{display:flex;align-items:center;gap:12px;padding:12px 14px;background:white;border-radius:14px;border:1.5px solid rgba(14,165,233,0.15);box-shadow:0 2px 8px rgba(14,165,233,0.06);}
+.welcome-feature-emoji{font-size:1.4rem;flex-shrink:0;}
+.welcome-feature-text{font-size:0.88rem;color:#0c1b2e;font-weight:600;}
+.welcome-feature-sub{font-size:0.75rem;color:#5a8aaa;margin-top:1px;}
+.welcome-dots{display:flex;justify-content:center;gap:6px;margin-bottom:2rem;}
+.welcome-dot{width:8px;height:8px;border-radius:999px;background:rgba(14,165,233,0.2);transition:all 0.3s;}
+.welcome-dot.active{width:24px;background:linear-gradient(135deg,#0ea5e9,#6366f1);}
+.welcome-btn{width:100%;padding:14px;font-size:1rem;font-weight:700;border-radius:999px;border:none;background:linear-gradient(135deg,#0ea5e9,#6366f1);color:white;cursor:pointer;font-family:'Nunito',sans-serif;box-shadow:0 6px 20px rgba(14,165,233,0.35);transition:all 0.2s;}
+.welcome-btn:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(14,165,233,0.45);}
+.welcome-btn:active{transform:scale(0.97);}
+.welcome-skip{margin-top:12px;font-size:0.8rem;color:#5a8aaa;cursor:pointer;text-align:center;font-weight:500;}
+.welcome-skip:hover{color:#0ea5e9;}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 80% 55% at 50% -10%,rgba(56,189,248,0.15) 0%,transparent 55%),radial-gradient(ellipse 50% 40% at 100% 60%,rgba(139,92,246,0.07) 0%,transparent 50%),radial-gradient(ellipse 40% 35% at 0% 100%,rgba(16,185,129,0.06) 0%,transparent 50%);pointer-events:none;z-index:0;}
 .onboarding{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:70vh;text-align:center;animation:slideUp 0.6s ease forwards;}
 .onboarding-title{font-family:'Syne',sans-serif;font-size:2rem;font-weight:800;background:linear-gradient(135deg,#0ea5e9,#6366f1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:0.5rem;letter-spacing:-0.02em;}
 .onboarding-sub{font-size:0.9rem;color:var(--muted);margin-bottom:2rem;}
@@ -143,11 +166,102 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 #export-snapshot{position:fixed;left:-9999px;top:0;width:400px;background:#e8f4fd;padding:2rem;font-family:'Nunito',sans-serif;}
 @media(max-width:400px){.app{padding:1rem 1rem 3rem;}.total-amount{font-size:1rem;}.btn{padding:6px 10px;font-size:0.78rem;}}
 </style>
+<script>
+function nextSlide(n) {
+  const current = document.querySelector('.welcome-slide.active');
+  if (current) current.classList.remove('active');
+  const next = document.getElementById('slide-' + n);
+  if (next) next.classList.add('active');
+}
+
+function skipWelcome() {
+  localStorage.setItem('splitzi_welcomed', '1');
+  document.getElementById('welcome-screen').style.display = 'none';
+  document.getElementById('main-app').style.display = 'block';
+  if (typeof initApp === 'function') initApp();
+}
+</script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
-<div class="app">
+<!-- WELCOME SCREENS -->
+<div class="welcome-screen" id="welcome-screen">
+  <div class="welcome-slides" id="welcome-slides">
+
+    <!-- Slide 1: Brand -->
+    <div class="welcome-slide active" id="slide-1">
+      <span class="welcome-emoji">🌴</span>
+      <div class="logo" style="font-size:2.2rem;margin-bottom:0.5rem;display:block;text-align:center;">Split<span>zi</span></div>
+      <div class="welcome-title" style="font-size:1.3rem;margin-bottom:0.5rem;" id="ws1-title">Tatil harcamaları,<br>artık çok kolay.</div>
+      <div class="welcome-sub" id="ws1-sub">Arkadaşlarınla tatilde kimin ne kadar ödediğini takip et, sondaki hesaplaşmayı unut.</div>
+      <div class="welcome-dots">
+        <div class="welcome-dot active" id="dot-1"></div>
+        <div class="welcome-dot" id="dot-2"></div>
+        <div class="welcome-dot" id="dot-3"></div>
+      </div>
+      <button class="welcome-btn" onclick="nextSlide(2)" id="ws1-btn">Devam →</button>
+      <div class="welcome-skip" onclick="skipWelcome()" id="ws1-skip">Atla</div>
+    </div>
+
+    <!-- Slide 2: Features -->
+    <div class="welcome-slide" id="slide-2">
+      <div class="welcome-features">
+        <div class="welcome-feature">
+          <span class="welcome-feature-emoji">⚡</span>
+          <div>
+            <div class="welcome-feature-text" id="wf1-text"></div>
+            <div class="welcome-feature-sub" id="wf1-sub"></div>
+          </div>
+        </div>
+        <div class="welcome-feature">
+          <span class="welcome-feature-emoji">🤖</span>
+          <div>
+            <div class="welcome-feature-text" id="wf2-text"></div>
+            <div class="welcome-feature-sub" id="wf2-sub"></div>
+          </div>
+        </div>
+        <div class="welcome-feature">
+          <span class="welcome-feature-emoji">💸</span>
+          <div>
+            <div class="welcome-feature-text" id="wf3-text"></div>
+            <div class="welcome-feature-sub" id="wf3-sub"></div>
+          </div>
+        </div>
+        <div class="welcome-feature">
+          <span class="welcome-feature-emoji">🌍</span>
+          <div>
+            <div class="welcome-feature-text" id="wf4-text"></div>
+            <div class="welcome-feature-sub" id="wf4-sub"></div>
+          </div>
+        </div>
+      </div>
+      <div class="welcome-dots">
+        <div class="welcome-dot" id="dot-1b"></div>
+        <div class="welcome-dot active" id="dot-2b"></div>
+        <div class="welcome-dot" id="dot-3b"></div>
+      </div>
+      <button class="welcome-btn" onclick="nextSlide(3)" id="ws2-btn">Harika! →</button>
+      <div class="welcome-skip" onclick="skipWelcome()" id="ws2-skip">Atla</div>
+    </div>
+
+    <!-- Slide 3: CTA -->
+    <div class="welcome-slide" id="slide-3">
+      <span class="welcome-emoji">🚀</span>
+      <div class="welcome-title" id="ws3-title">Hazır mısın?</div>
+      <div class="welcome-sub" id="ws3-sub">Saniyeler içinde tatilini oluştur ya da arkadaşının tatiline katıl.</div>
+      <div class="welcome-dots">
+        <div class="welcome-dot" id="dot-1c"></div>
+        <div class="welcome-dot" id="dot-2c"></div>
+        <div class="welcome-dot active" id="dot-3c"></div>
+      </div>
+      <button class="welcome-btn" onclick="skipWelcome()" id="ws3-btn">Başlayalım! 🌴</button>
+    </div>
+
+  </div>
+</div>
+
+<div class="app" id="main-app" style="display:none;">
 
 <div id="view-onboarding" class="view" style="position:relative;">
   <div class="onboarding">
@@ -435,7 +549,15 @@ const PAL=[{c:'#0ea5e9',bg:'rgba(14,165,233,0.12)'},{c:'#10b981',bg:'rgba(16,185
 function pal(i){return PAL[i%PAL.length];}
 
 let people=[],expenses=[],tripName='',tripEmoji='🌴',selCat='food',selCur=localStorage.getItem('splitzi_lang')==='en'||localStorage.getItem('splitzi_lang')==='nl'?'EUR':'TRY';
-let lang=localStorage.getItem('splitzi_lang')||'tr';
+function detectLang() {
+  const saved = localStorage.getItem('splitzi_lang');
+  if (saved) return saved;
+  const browser = (navigator.language || navigator.userLanguage || 'tr').toLowerCase();
+  if (browser.startsWith('nl')) return 'nl';
+  if (browser.startsWith('en')) return 'en';
+  return 'tr';
+}
+let lang = detectLang();
 let rates={TRY:1,USD:0.028,EUR:0.026,GBP:0.022};
 
 const TR2={people:'👥 Kişiler',addExpense:'+ Harcama ekle',settle:'Tatil Özeti',rank:'SIRALAMA',expenses:'HARCAMALAR',total:'Toplam',leastPaid:'Az ödedi',mostPaid:'En çok ödedi',noExpense:'Henüz harcama yok. Ekle butonuna bas!',noRank:'Harcama ekleyince sıralama görünür.',participants:'KATILIMCILAR',addName:'İsim ekle...',add:'Ekle',back:'Geri dön',newExpense:'YENİ HARCAMA',desc:'Açıklama',descPh:'Akşam yemeği, market, yakıt...',amount:'Tutar',currency:'Para birimi',date:'Tarih',payer:'Ödeyen',who:'Kimler dahil?',category:'Kategori',save:'Kaydet',cancel:'Vazgeç',receipt:'Fiş / makbuz (opsiyonel)',reading:'Fiş okunuyor...',summaryTitle:'TATİL ÖZETİ',totalExp:'Toplam harcama',perPerson:'Kişi başı eşit pay',expCount:'Toplam harcama sayısı',peopleCount:'Katılımcı sayısı',personDist:'KİŞİ BAZLI DAĞILIM',catDist:'KATEGORİ BAZLI DAĞILIM',daily:'GÜNLÜK AKIŞ',whoOwes:'KİM KİME ÖDEMELİ?',allEven:'Herkes eşit ödedi, borç yok!',resetAll:'Tüm verileri sıfırla',nobodyYet:'Henüz kimse yok, ekle! 👆',noRankYet:'Harcama ekleyince sıralama görünür 📊',noExpenseYet:'Henüz harcama yok. Başlamak için ekle butonuna bas! ➕',noSettlement:'Herkes eşit ödedi, borç yok! 🎉',createTrip:'Tatilini oluştur',tripSub:'Bir isim ver ve emoji seç',start:'Başla →'};
@@ -1150,32 +1272,71 @@ function showToast(msg) {
   setTimeout(() => toast.remove(), 2500);
 }
 
+// WELCOME SCREEN
+let currentSlide = 1;
+
+
+function nextSlide(n) {
+  document.getElementById('slide-' + currentSlide).classList.remove('active');
+  currentSlide = n;
+  document.getElementById('slide-' + n).classList.add('active');
+}
+
+
+
+function applyWelcomeLang() {
+  const isEN = lang === 'en', isNL = lang === 'nl';
+  const el = (id, tr, en, nl) => { const e = document.getElementById(id); if(e) e.textContent = isEN ? en : isNL ? nl : tr; };
+  el('ws1-title', 'Tatil harcamaları,\nartık çok kolay.', 'Holiday expenses,\nnow effortless.', 'Reiskosten,\nnu makkelijk.');el('ws1-sub', 'Arkadaşlarınla tatilde kimin ne kadar ödediğini takip et, sondaki hesaplaşmayı unut.', 'Track who paid what on your trip with friends. No more awkward settle-ups.', 'Bijhouden wie wat betaalt op reis. Nooit meer awkward afrekenen.');
+  el('ws1-btn', 'Devam →', 'Continue →', 'Verder →');
+  el('ws1-skip', 'Atla', 'Skip', 'Overslaan');
+  el('wf1-text', 'Gerçek zamanlı sync', 'Real-time sync', 'Realtime sync');
+  el('wf1-sub', 'Herkes anında görür', 'Everyone sees it instantly', 'Iedereen ziet het direct');
+  el('wf2-text', 'AI fiş okuma', 'AI receipt scanning', 'AI bonnen scannen');
+  el('wf2-sub', 'Fotoğraf çek, otomatik doldur', 'Snap a photo, auto-fill', 'Foto maken, automatisch invullen');
+  el('wf3-text', 'Otomatik hesaplama', 'Auto calculations', 'Automatisch berekenen');
+  el('wf3-sub', 'Kim kime ne kadar borçlu?', 'Who owes who?', 'Wie is wat verschuldigd?');
+  el('wf4-text', 'Çoklu döviz', 'Multi-currency', 'Meerdere valuta');
+  el('wf4-sub', '₺ $ € £ destekli', '₺ $ € £ supported', '₺ $ € £ ondersteund');
+  el('ws2-btn', 'Harika! →', 'Awesome! →', 'Top! →');
+  el('ws2-skip', 'Atla', 'Skip', 'Overslaan');
+  el('ws3-title', 'Hazır mısın?', 'Ready to go?', 'Klaar om te beginnen?');
+  el('ws3-sub', 'Saniyeler içinde tatilini oluştur ya da arkadaşının tatiline katıl.', 'Create your trip in seconds or join a friend\'s.', 'Maak je reis aan in seconden of sluit je aan bij een vriend.');
+  el('ws3-btn', 'Başlayalım! 🌴', 'Let\'s go! 🌴', 'Laten we gaan! 🌴');
+}
+
 // INIT
-load();fetchRates();renderEmojis();
-['btn-tr','btn-tr-ob'].forEach(id=>{const el=document.getElementById(id);if(el)el.classList.toggle('active',lang==='tr');});
-['btn-en','btn-en-ob'].forEach(id=>{const el=document.getElementById(id);if(el)el.classList.toggle('active',lang==='en');});
-applyLang();
-
-// Restore trip from localStorage
-tripId = localStorage.getItem('splitzi_trip_id');
-updateBadge();
-
-// Update lang toggles for trips view
-['btn-tr','btn-tr-ob','btn-tr-trips'].forEach(id=>{const el=document.getElementById(id);if(el)el.classList.toggle('active',lang==='tr');});['btn-nl','btn-nl-ob','btn-nl-trips'].forEach(id=>{const el=document.getElementById(id);if(el)el.classList.toggle('active',lang==='nl');});
-['btn-en','btn-en-ob','btn-en-trips'].forEach(id=>{const el=document.getElementById(id);if(el)el.classList.toggle('active',lang==='en');});
-
-const myTrips = getMyTrips();
-if(myTrips.length > 0) {
-  renderTripsList();
-  if(tripId && tripName) {
-    document.getElementById('trip-code-display').textContent = tripId;
-    subscribeRealtime();
-    setView('main');
+function initApp() {
+  load();
+  fetchRates();
+  renderEmojis();
+  ['btn-tr','btn-tr-ob','btn-tr-trips'].forEach(id=>{const el=document.getElementById(id);if(el)el.classList.toggle('active',lang==='tr');});
+  ['btn-en','btn-en-ob','btn-en-trips'].forEach(id=>{const el=document.getElementById(id);if(el)el.classList.toggle('active',lang==='en');});
+  ['btn-nl','btn-nl-ob','btn-nl-trips'].forEach(id=>{const el=document.getElementById(id);if(el)el.classList.toggle('active',lang==='nl');});
+  applyLang();
+  tripId = localStorage.getItem('splitzi_trip_id');
+  updateBadge();
+  const myTrips = getMyTrips();
+  if(myTrips.length > 0) {
+    renderTripsList();
+    if(tripId && tripName) {
+      document.getElementById('trip-code-display').textContent = tripId;
+      subscribeRealtime();
+      setView('main');
+    } else {
+      setView('trips');
+    }
   } else {
-    setView('trips');
+    setView('onboarding');
   }
+}
+
+if (!localStorage.getItem('splitzi_welcomed')) {
+  applyWelcomeLang();
 } else {
-  setView('onboarding');
+  document.getElementById('welcome-screen').style.display = 'none';
+  document.getElementById('main-app').style.display = 'block';
+  initApp();
 }
 </script>
 </body>
