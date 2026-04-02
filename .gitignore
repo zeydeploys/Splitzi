@@ -1,0 +1,24 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+
+# iOS
+ios/App/Pods/
+ios/App/App.xcworkspace/
+ios/App/build/
+
+# Supabase
+supabase/.temp/
+
+# Backup
+*.backup.html
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/
